@@ -44,10 +44,10 @@
         }
     },
     "scripts": {
-        "coverage": "vendor/bin/pest --coverage-clover=build/coverage.xml --coverage-html=build/coverage",
-        "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes",
-        "psalm": "vendor/bin/psalm",
-        "test": "vendor/bin/pest"
+        "coverage": "./vendor/bin/pest --coverage-clover=build/coverage.xml --coverage-html=build/coverage",
+        "format": "./vendor/bin/php-cs-fixer fix --allow-risky=yes",
+        "psalm": "./vendor/bin/psalm",
+        "test": "./vendor/bin/pest"
     },
     "config": {
         "sort-packages": true
