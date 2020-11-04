@@ -33,12 +33,10 @@ jobs:
       - name: Install dependencies
         run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
 
-      - name: Execute tests
-        run: composer coverage
-
-      - name: Upload code coverage
+      - name: Run test & report code coverage
         uses: paambaati/codeclimate-action@v2.7.4
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          coverageLocations: ${{github.workspace}}/build/coverage.xml:clobber
+          coverageCommand: composer coverage
+          coverageLocations: ${{github.workspace}}/build/coverage.xml:clover
