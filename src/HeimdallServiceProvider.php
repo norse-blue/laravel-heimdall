@@ -8,8 +8,10 @@ use ArgumentCountError;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use NorseBlue\Heimdall\Console\InstallCommand;
+use NorseBlue\Heimdall\Contracts\DefinesEntity;
 use NorseBlue\Heimdall\Contracts\DefinesPermission;
 use NorseBlue\Heimdall\Contracts\DefinesRole;
+use NorseBlue\Heimdall\Exceptions\InvalidEntityContractException;
 
 /**
  * @codeCoverageIgnore
@@ -25,8 +27,8 @@ class HeimdallServiceProvider extends ServiceProvider
     {
         $this->configurePublishing();
         $this->configureCommands();
-        $this->loadConfigPermissions();
-        $this->loadConfigRoles();
+        $this->loadConfigEntities('heimdall.permissions', DefinesPermission::class);
+        $this->loadConfigEntities('heimdall.roles', DefinesRole::class);
     }
 
     protected function configurePublishing(): void
@@ -51,44 +53,36 @@ class HeimdallServiceProvider extends ServiceProvider
         ]);
     }
 
-    protected function loadConfigPermissions(): void
+    /**
+     * @param string $key The config key that holds the entities.
+     * @param string $contract The full qualified contract that must implement the entity.
+     */
+    protected function loadConfigEntities(string $key, string $contract): void
     {
-        collect(config('heimdall.permissions'))
-                ->each(function ($permission): void {
-                    if (is_string($permission)) {
-                        if (! class_exists($permission) || ! is_subclass_of($permission, DefinesPermission::class)) {
-                            Log::warning('Invalid permission entry found in Heimdall config.', ['invalid-entry' => $permission]);
+        $base_contract = DefinesEntity::class;
+        if (! is_subclass_of($contract, $base_contract)) {
+            throw new InvalidEntityContractException("The contract ${contract} is not of type ${base_contract}.");
+        }
 
-                            return;
-                        }
-                        $permission = $permission::definition();
-                    }
-
-                    try {
-                        AppPermissions::create(...array_values($permission));
-                    } catch (ArgumentCountError $exception) {
-                        Log::warning('Invalid permission entry found in Heimdall config.', ['invalid-entry' => $permission, 'exception' => $exception]);
-                    }
-                });
-    }
-
-    protected function loadConfigRoles(): void
-    {
-        collect(config('heimdall.roles'))
-            ->each(function ($role): void {
-                if (is_string($role)) {
-                    if (! class_exists($role) || ! is_subclass_of($role, DefinesRole::class)) {
-                        Log::warning('Invalid role entry found in Heimdall config.', ['invalid-entry' => $role]);
+        collect(config($key))
+            ->each(static function ($item) use ($key, $contract): void {
+                if (is_string($item)) {
+                    if (! class_exists($item) || ! is_subclass_of($item, $contract)) {
+                        Log::warning("Invalid entry found in ${key} config value.", ['invalid-entry' => $item]);
 
                         return;
                     }
-                    $role = $role::definition();
+                    $item = $item::definition();
                 }
 
                 try {
-                    AppRoles::create(...array_values($role));
+                    if (array_key_exists('permissions', $item)) {
+                        AppRoles::create(...array_values($item));
+                    } else {
+                        AppPermissions::create(...array_values($item));
+                    }
                 } catch (ArgumentCountError $exception) {
-                    Log::warning('Invalid role entry found in Heimdall config.', ['invalid-entry' => $role, 'exception' => $exception]);
+                    Log::warning("Invalid entry found in ${key} config.", ['invalid-entry' => $item, 'exception' => $exception]);
                 }
             });
     }
