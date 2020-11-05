@@ -7,7 +7,7 @@ namespace NorseBlue\Heimdall\Contracts;
 interface DefinesPermission extends DefinesEntity
 {
     /**
-     * @return array{
+     * @return array<string, string>{
      *  key: string,
      *  name: string,
      *  description: string,

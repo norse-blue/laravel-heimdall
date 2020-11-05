@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenNormalClasses;
+use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenTraits;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
+use PHP_CodeSniffer\Standards\PEAR\Sniffs\WhiteSpace\ObjectOperatorIndentSniff;
+use SlevomatCodingStandard\Sniffs\Classes\SuperfluousExceptionNamingSniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
+
 return [
 
     /*
@@ -61,13 +70,33 @@ return [
     ],
 
     'remove' => [
-        //  ExampleInsight::class,
+        ForbiddenNormalClasses::class,
+        ForbiddenTraits::class,
+        LineLengthSniff::class,
+        ObjectOperatorIndentSniff::class,
+        SuperfluousExceptionNamingSniff::class,
     ],
 
     'config' => [
-        //  ExampleInsight::class => [
-        //      'key' => 'value',
-        //  ],
+        DisallowMixedTypeHintSniff::class => [
+            'exclude' => [
+                'src/Contracts/DefinesEntity.php',
+                'src/Contracts/DefinesRole.php',
+                'src/Role.php',
+            ],
+        ],
+        PropertyTypeHintSniff::class => [
+            'exclude' => [
+                'src/Console/InstallCommand.php',
+            ],
+        ],
+        ReturnTypeHintSniff::class => [
+            'exclude' => [
+                'src/Permissions/Admin/ViewDashboardPermission.php',
+                'src/Permissions/Users/CreateUsersPermission.php',
+                'src/Roles/AdminRole.php',
+            ],
+        ],
     ],
 
     /*

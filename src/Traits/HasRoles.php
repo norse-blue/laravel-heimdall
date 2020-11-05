@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace NorseBlue\Heimdall\Traits;
 
+use JsonException;
 use NorseBlue\Heimdall\AppPermissions;
 use NorseBlue\Heimdall\AppRoles;
 
+/**
+ * @property array<string> $roles
+ *
+ * @property-read array<string> $permissions
+ */
 trait HasRoles
 {
-    public static function bootHasRoles()
+    public static function bootHasRoles(): void
     {
-        static::saving(function ($model) {
+        static::saving(function ($model): void {
             $model->setRolesAttribute($model->roles);
         });
     }
@@ -23,7 +29,8 @@ trait HasRoles
 
     /**
      * @return array<string>
-     * @throws \JsonException
+     *
+     * @throws JsonException
      */
     public function getRolesAttribute(): array
     {
@@ -33,14 +40,17 @@ trait HasRoles
     /**
      * @param array<string> $roles
      *
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function setRolesAttribute(array $roles): void
     {
         $this->attributes[$this->getRolesColumn()] = json_encode(AppRoles::valid($roles), JSON_THROW_ON_ERROR);
     }
 
-    public function getPermissionsAttribute()
+    /**
+     * @return array<string>
+     */
+    public function getPermissionsAttribute(): array
     {
         return collect($this->roles)
             ->map(function ($role) {

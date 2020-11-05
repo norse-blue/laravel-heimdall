@@ -45,12 +45,12 @@ abstract class AppRoles
 
     /**
      * @param array<string> $permissions
-     *
-     * @return \NorseBlue\Heimdall\Role
      */
     public static function create(string $key, string $name, array $permissions, string $description = ''): Role
     {
-        return tap(new Role($key, $name, $permissions, $description), static fn (Role $role) => static::$roles[$key] = $role);
+        return tap(new Role($key, $name, $permissions, $description), static function (Role $role) use ($key): void {
+            static::$roles[$key] = $role;
+        });
     }
 
     /**

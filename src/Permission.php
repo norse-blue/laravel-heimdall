@@ -30,29 +30,21 @@ class Permission implements JsonSerializable
      * The permission's description.
      */
     private string $description;
-    
+
     public function __construct(string $key, string $name, string $description = '')
     {
         $this->key = $key;
         $this->name = $name;
         $this->description = $description;
     }
-    
-    protected function accessorKey():string
-    {
-        return $this->key;
-    }
-    
-    protected function accessorName():string
-    {
-        return $this->name;
-    }
-    
-    protected function accessorDescription():string
-    {
-        return $this->description;
-    }
-    
+
+    /**
+     * @return array<string, string>{
+     *  key: string,
+     *  name: string,
+     *  description: string
+     * }
+     */
     public function jsonSerialize(): array
     {
         return [
@@ -60,5 +52,20 @@ class Permission implements JsonSerializable
             'name' => $this->name,
             'description' => $this->description,
         ];
+    }
+
+    protected function accessorKey(): string
+    {
+        return $this->key;
+    }
+
+    protected function accessorName(): string
+    {
+        return $this->name;
+    }
+
+    protected function accessorDescription(): string
+    {
+        return $this->description;
     }
 }

@@ -28,10 +28,8 @@ class InstallCommand extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         // Publish...
         $this->callSilent('vendor:publish', ['--tag' => 'heimdall-config', '--force' => true]);
@@ -42,8 +40,6 @@ class InstallCommand extends Command
 
     /**
      * Install the Heimdall service providers in the application configuration file.
-     *
-     * @return void
      */
     protected function installHeimdallServiceProvider(): void
     {
@@ -67,7 +63,7 @@ class InstallCommand extends Command
     {
         $contents = file_get_contents($path);
 
-        if($contents !== false) {
+        if ($contents !== false) {
             file_put_contents($path, str_replace($search, $replace, $contents));
         }
     }

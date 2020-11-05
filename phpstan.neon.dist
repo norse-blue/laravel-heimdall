@@ -7,12 +7,6 @@ parameters:
       message: '#Cannot access property \$permissions on NorseBlue\\Heimdall\\Role\|null.#'
       path: src/AppRoles.php
     -
-      message: '#Method NorseBlue\\Heimdall\\Contracts\\DefinesEntity::definition\(\) return type has no value type specified in iterable type array\.#'
-      path: src/Contracts/DefinesEntity.php
-    -
-      message: '#Method NorseBlue\\Heimdall\\Permission::jsonSerialize\(\) return type has no value type specified in iterable type array\.#'
-      path: src/Permission.php
-    -
       message: '#Method NorseBlue\\Heimdall\\Permissions\\[a-zA-Z0-9\\_]+::definition\(\) should return array#'
       paths:
         - src/Permissions/Admin/ViewDashboardPermission.php

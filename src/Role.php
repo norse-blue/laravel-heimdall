@@ -55,7 +55,7 @@ class Role implements JsonSerializable
     }
 
     /**
-     * @return array{
+     * @return array<string, mixed>{
      *  key: string,
      *  name: string,
      *  permissions: array,

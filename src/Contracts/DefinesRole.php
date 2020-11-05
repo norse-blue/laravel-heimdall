@@ -7,7 +7,7 @@ namespace NorseBlue\Heimdall\Contracts;
 interface DefinesRole extends DefinesEntity
 {
     /**
-     * @return array{
+     * @return array<string, mixed>{
      *  key: string,
      *  name: string,
      *  permissions: array,
