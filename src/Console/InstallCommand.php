@@ -48,9 +48,10 @@ class InstallCommand extends Command
     protected function installHeimdallServiceProvider(): void
     {
         // Service Providers...
-        copy(__DIR__.'/../../stubs/app/Providers/HeimdallServiceProvider.php', app_path('Providers/HeimdallServiceProvider.php'));
-        
-        if (! Str::contains(file_get_contents(config_path('app.php')), 'App\\Providers\\HeimdallServiceProvider::class')) {
+        copy(__DIR__ . '/../../stubs/app/Providers/HeimdallServiceProvider.php.stub', app_path('Providers/HeimdallServiceProvider.php'));
+
+        $contents = file_get_contents(config_path('app.php'));
+        if ($contents !== false && ! Str::contains($contents, 'App\\Providers\\HeimdallServiceProvider::class')) {
             $this->replaceInFile(
                 "\n    ],\n\n    /*\n    |--------------------------------------------------------------------------\n    | Class Aliases",
                 "        App\Providers\HeimdallServiceProvider::class," . PHP_EOL . "\n    ],\n\n    /*\n    |--------------------------------------------------------------------------\n    | Class Aliases",
@@ -64,6 +65,10 @@ class InstallCommand extends Command
      */
     protected function replaceInFile(string $search, string $replace, string $path): void
     {
-        file_put_contents($path, str_replace($search, $replace, file_get_contents($path)));
+        $contents = file_get_contents($path);
+
+        if($contents !== false) {
+            file_put_contents($path, str_replace($search, $replace, $contents));
+        }
     }
 }

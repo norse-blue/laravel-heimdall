@@ -8,20 +8,16 @@ class HeimdallServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         //
     }
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->configurePermissions();
         $this->configureRoles();
@@ -29,14 +25,12 @@ class HeimdallServiceProvider extends ServiceProvider
 
     /**
      * Configure additional permissions that are available within the application.
-     *
-     * @return void
      */
-    protected function configurePermissions()
+    protected function configurePermissions(): void
     {
-        // 
+        //
     }
-    
+
     /**
      * Configure additional roles that are available within the application.
      *
@@ -44,6 +38,6 @@ class HeimdallServiceProvider extends ServiceProvider
      */
     protected function configureRoles()
     {
-        // 
+        //
     }
 }

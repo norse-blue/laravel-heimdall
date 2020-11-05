@@ -43,7 +43,9 @@ abstract class AppPermissions
 
     public static function create(string $key, string $name, string $description = ''): Permission
     {
-        return tap(new Permission($key, $name, $description), static fn (Permission $permission) => static::attach($permission));
+        return tap(new Permission($key, $name, $description), static function (Permission $permission) {
+            static::attach($permission);
+        });
     }
 
     /**

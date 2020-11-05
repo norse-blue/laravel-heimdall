@@ -54,6 +54,14 @@ class Role implements JsonSerializable
                 ->all();
     }
 
+    /**
+     * @return array{
+     *  key: string,
+     *  name: string,
+     *  permissions: array,
+     *  description: string,
+     * }
+     */
     public function jsonSerialize(): array
     {
         return [
@@ -79,6 +87,9 @@ class Role implements JsonSerializable
         return $this->description;
     }
 
+    /**
+     * @return array<string>
+     */
     protected function accessorPermissions(): array
     {
         return $this->permissions;

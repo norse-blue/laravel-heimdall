@@ -12,8 +12,8 @@ class CreateUsersPermission extends DefinedPermission
     {
         return [
             'key' => 'users:create',
-            'name' => __('Create users'),
-            'description' => __('Allows the user to create users.'),
+            'name' => __('Create users') ?? '',
+            'description' => __('Allows the user to create users.') ?? '',
         ];
     }
 }

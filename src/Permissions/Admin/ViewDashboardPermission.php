@@ -12,8 +12,8 @@ class ViewDashboardPermission extends DefinedPermission
     {
         return [
             'key' => 'admin-dashboard:view',
-            'name' => __('View Admin Dashboard'),
-            'description' => __('Allows the user to view the admin dashboard.'),
+            'name' => __('View Admin Dashboard') ?? '',
+            'description' => __('Allows the user to view the admin dashboard.') ?? '',
         ];
     }
 }
