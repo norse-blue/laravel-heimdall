@@ -36,6 +36,8 @@ class InstallCommand extends Command
 
         // Heimdall Provider...
         $this->installHeimdallServiceProvider();
+
+        $this->info("Heimdall installed.");
     }
 
     /**
