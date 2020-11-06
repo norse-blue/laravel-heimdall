@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use NorseBlue\Heimdall\Exceptions\InvalidRoleKeyException;
 use NorseBlue\Heimdall\Role;
 
 it('can retrieve properties', function () {
@@ -32,4 +33,10 @@ it('serializes to json', function () {
         'description' => $role->description,
         'permissions' => $role->permissions,
     ], $role->jsonSerialize());
+});
+
+it('throws exception if wildcard is used as role key', function () {
+    $this->expectException(InvalidRoleKeyException::class);
+
+    new Role('*', 'wildcard', []);
 });

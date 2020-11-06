@@ -6,6 +6,7 @@ namespace NorseBlue\Heimdall;
 
 use JsonSerializable;
 use NorseBlue\HandyProperties\Traits\HasPropertyAccessors;
+use NorseBlue\Heimdall\Exceptions\InvalidRoleKeyException;
 
 /**
  * @property-read string $key
@@ -44,6 +45,10 @@ class Role implements JsonSerializable
      */
     public function __construct(string $key, string $name, $permissions, string $description = '')
     {
+        if ($key === '*') {
+            throw new InvalidRoleKeyException("Wildcard roles are not allowed.");
+        }
+
         $this->key = $key;
         $this->name = $name;
         $this->description = $description;
