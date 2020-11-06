@@ -28,7 +28,12 @@ composer require norse-blue/laravel-heimdall
 
 You can publish the config file by running:
 ```bash
-php artisan vendor:publish --provider="NorseBlue\Heimdall\HeimdallServiceProvider" --tag="config"
+php artisan vendor:publish --provider="NorseBlue\Heimdall\HeimdallServiceProvider" --tag=heimdall-config
+```
+
+You can install the service provider by running:
+```bash
+php artisan heimdall:install
 ```
 
 ## Usage
