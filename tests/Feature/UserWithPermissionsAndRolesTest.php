@@ -9,6 +9,32 @@ use function NorseBlue\Heimdall\Tests\createTestPermissions;
 use function NorseBlue\Heimdall\Tests\createTestRoles;
 use function NorseBlue\Heimdall\Tests\setUpDatabaseForPermissionsAndRoles;
 
+it('handles non initialized permissions correctly', function () {
+    setUpDatabaseForPermissionsAndRoles($this->app);
+    createTestRoles(3);     // Also creates test-permission-1, test-permission-2 and test-permission-3
+
+    $user = UserWithPermissionsAndRoles::create([
+        'email' => 'dev@norse.blue',
+        'roles' => [],
+    ]);
+
+    $this->assertEquals([], $user->permissions);
+    $this->assertEquals([], $user->roles);
+});
+
+it('handles non initialized roles correctly', function () {
+    setUpDatabaseForPermissionsAndRoles($this->app);
+    createTestRoles(3);     // Also creates test-permission-1, test-permission-2 and test-permission-3
+
+    $user = UserWithPermissionsAndRoles::create([
+        'email' => 'dev@norse.blue',
+        'permissions' => [],
+    ]);
+
+    $this->assertEquals([], $user->permissions);
+    $this->assertEquals([], $user->roles);
+});
+
 it('handles permissions correctly', function () {
     setUpDatabaseForPermissionsAndRoles($this->app);
     createTestPermissions(3);
