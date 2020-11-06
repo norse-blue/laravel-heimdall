@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use NorseBlue\Heimdall\AppPermissions;
+use NorseBlue\Heimdall\AppRoles;
 
 class HeimdallServiceProvider extends ServiceProvider
 {
