@@ -73,7 +73,7 @@ it('handles wildcard permission from role correctly', function () {
     setUpDatabaseForRoles($this->app);
     clearAppRoles();
     createTestRoles(3);     // Also creates test-permission-1, test-permission-2 and test-permission-3
-    AppRoles::create('wildcard','Wildcard Role', ['*']);
+    AppRoles::create('wildcard', 'Wildcard Role', ['*']);
 
     $user = UserWithRoles::create([
         'email' => 'dev@norse.blue',
