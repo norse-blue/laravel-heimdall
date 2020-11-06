@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use function NorseBlue\Heimdall\Tests\createTestRoles;
 use NorseBlue\Heimdall\Tests\Fixtures\UserWithRoles;
+use function NorseBlue\Heimdall\Tests\createTestRoles;
 use function NorseBlue\Heimdall\Tests\setUpDatabaseForRoles;
 
 it('handles non initialized roles correctly', function () {

@@ -10,7 +10,7 @@ use NorseBlue\Heimdall\Traits\HasRoles;
 class UserWithRoles extends Authenticatable
 {
     use HasRoles;
-    
+
     protected $table = 'users';
 
     /**
