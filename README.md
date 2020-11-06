@@ -60,7 +60,13 @@ composer coverage
 To find issues by statically analyzing the code run:
 
 ``` bash
-composer psalm
+composer analyse
+```
+
+To get code insights run:
+
+``` bash
+composer insights
 ```
 
 To fix styling issues run:
