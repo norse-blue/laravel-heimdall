@@ -46,7 +46,7 @@ class Role implements JsonSerializable
     public function __construct(string $key, string $name, $permissions, string $description = '')
     {
         if ($key === '*') {
-            throw new InvalidRoleKeyException("Wildcard roles are not allowed.");
+            throw new InvalidRoleKeyException('Wildcard key is not allowed for roles.');
         }
 
         $this->key = $key;
