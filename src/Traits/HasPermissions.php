@@ -30,7 +30,12 @@ trait HasPermissions
             return [];
         }
 
-        return AppPermissions::valid(json_decode($this->attributes[$this->getPermissionsColumn()], true, 512, JSON_THROW_ON_ERROR));
+        $permissions = json_decode($this->attributes[$this->getPermissionsColumn()], true, 512, JSON_THROW_ON_ERROR);
+        if (in_array('*', $permissions, true)) {
+            return ['*'];
+        }
+
+        return AppPermissions::valid($permissions);
     }
 
     /**
@@ -40,12 +45,15 @@ trait HasPermissions
      */
     public function setPermissionsAttribute(array $permissions): void
     {
-        $this->attributes[$this->getPermissionsColumn()] = json_encode(AppPermissions::valid($permissions), JSON_THROW_ON_ERROR);
+        $this->attributes[$this->getPermissionsColumn()] = json_encode(
+            in_array('*', $permissions, true) ? ['*'] : AppPermissions::valid($permissions),
+            JSON_THROW_ON_ERROR
+        );
     }
 
     public function hasPermission(string $key): bool
     {
-        return AppPermissions::has($key) && in_array($key, $this->permissions, true);
+        return AppPermissions::has($key) && ($this->permissions === ['*'] || in_array($key, $this->permissions, true));
     }
 
     protected function getPermissionsColumn(): string

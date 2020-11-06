@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use NorseBlue\Heimdall\AppRoles;
 use NorseBlue\Heimdall\Tests\Fixtures\UserWithRoles;
 use function NorseBlue\Heimdall\Tests\clearAppRoles;
 use function NorseBlue\Heimdall\Tests\createTestRoles;
@@ -54,5 +55,24 @@ it('handles roles correctly', function () {
     $this->assertTrue($user->hasPermission('test-permission-1'));
     $this->assertTrue($user->hasPermission('test-permission-2'));
     $this->assertFalse($user->hasPermission('test-permission-3'));
+    $this->assertFalse($user->hasPermission('nonexistent-permission'));
+});
+
+it('handles wildcard permission from role correctly', function () {
+    setUpDatabaseForRoles($this->app);
+    clearAppRoles();
+    createTestRoles(3);     // Also creates test-permission-1, test-permission-2 and test-permission-3
+    AppRoles::create('wildcard','Wildcard Role', ['*']);
+
+    $user = UserWithRoles::create([
+        'email' => 'dev@norse.blue',
+        'roles' => ['wildcard'],
+    ]);
+
+    $this->assertEquals(['*'], $user->permissions);
+
+    $this->assertTrue($user->hasPermission('test-permission-1'));
+    $this->assertTrue($user->hasPermission('test-permission-2'));
+    $this->assertTrue($user->hasPermission('test-permission-3'));
     $this->assertFalse($user->hasPermission('nonexistent-permission'));
 });

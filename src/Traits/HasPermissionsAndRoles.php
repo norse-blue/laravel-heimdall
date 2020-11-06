@@ -24,15 +24,21 @@ trait HasPermissionsAndRoles
      */
     public function getAllPermissionsAttribute(): array
     {
-        return collect($this->getPermissionsAttribute())
+        $permissions = collect($this->getPermissionsAttribute())
             ->merge($this->getRolesPermissionsAttribute())
             ->unique()
             ->sort()
             ->all();
+
+        if (in_array('*', $permissions, true)) {
+            return ['*'];
+        }
+
+        return $permissions;
     }
 
     public function hasPermission(string $key): bool
     {
-        return AppPermissions::has($key) && in_array($key, $this->all_permissions, true);
+        return AppPermissions::has($key) && ($this->all_permissions === ['*'] || in_array($key, $this->all_permissions, true));
     }
 }

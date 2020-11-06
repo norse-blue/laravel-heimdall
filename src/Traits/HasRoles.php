@@ -56,7 +56,7 @@ trait HasRoles
      */
     public function getPermissionsAttribute(): array
     {
-        return collect($this->roles)
+        $permissions = collect($this->roles)
             ->map(function ($role) {
                 return AppRoles::find($role)->permissions;
             })
@@ -65,6 +65,12 @@ trait HasRoles
             ->sort()
             ->values()
             ->all();
+
+        if (in_array('*', $permissions, true)) {
+            return ['*'];
+        }
+
+        return $permissions;
     }
 
     public function hasRole(string $key): bool
@@ -74,6 +80,6 @@ trait HasRoles
 
     public function hasPermission(string $key): bool
     {
-        return AppPermissions::has($key) && in_array($key, $this->permissions, true);
+        return AppPermissions::has($key) && ($this->permissions === ['*'] || in_array($key, $this->permissions, true));
     }
 }

@@ -49,3 +49,21 @@ it('handles permissions correctly', function () {
     $this->assertFalse($user->hasPermission('test-permission-3'));
     $this->assertFalse($user->hasPermission('nonexistent-permission'));
 });
+
+it('handles wildcard permission correctly', function () {
+    setUpDatabaseForPermissions($this->app);
+    clearAppPermissions();
+    createTestPermissions(3);
+
+    $user = UserWithPermissions::create([
+        'email' => 'dev@norse.blue',
+        'permissions' => ['*'],
+    ]);
+
+    $this->assertEquals(['*'], $user->permissions);
+
+    $this->assertTrue($user->hasPermission('test-permission-1'));
+    $this->assertTrue($user->hasPermission('test-permission-2'));
+    $this->assertTrue($user->hasPermission('test-permission-3'));
+    $this->assertFalse($user->hasPermission('nonexistent-permission'));
+});
