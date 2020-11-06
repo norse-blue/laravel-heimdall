@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use NorseBlue\Heimdall\AppPermissions;
 use NorseBlue\Heimdall\Permission;
+use NorseBlue\Heimdall\Permissions\Admin\ViewDashboardPermission;
 
 it('can clear permissions', function () {
     AppPermissions::clear();
@@ -26,6 +27,27 @@ it('can attach a permission', function () {
 
     $this->assertTrue(AppPermissions::has($permission->key));
     $this->assertEquals($permission, AppPermissions::find($permission->key));
+});
+
+it('can attach a defined permission', function () {
+    AppPermissions::clear();
+
+    $role = AppPermissions::attach(ViewDashboardPermission::class);
+
+    $this->assertTrue(AppPermissions::has($role->key));
+    $this->assertEquals($role, AppPermissions::find($role->key));
+});
+
+it('throws an exception when trying to attach an invalid string value', function () {
+    $this->expectException(InvalidArgumentException::class);
+
+    AppPermissions::attach('NorseBlue\Heimdall\InvalidDefinedRole');
+});
+
+it('throws an exception when trying to attach an invalid object value', function () {
+    $this->expectException(InvalidArgumentException::class);
+
+    AppPermissions::attach(new stdClass());
 });
 
 it('can create a permission', function () {

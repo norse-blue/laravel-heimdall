@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use NorseBlue\Heimdall\AppRoles;
 use NorseBlue\Heimdall\Role;
+use NorseBlue\Heimdall\Roles\AdminRole;
 
 it('can clear roles', function () {
     AppRoles::clear();
@@ -26,6 +27,27 @@ it('can attach a role', function () {
 
     $this->assertTrue(AppRoles::has($role->key));
     $this->assertEquals($role, AppRoles::find($role->key));
+});
+
+it('can attach a defined role', function () {
+    AppRoles::clear();
+
+    $role = AppRoles::attach(AdminRole::class);
+
+    $this->assertTrue(AppRoles::has($role->key));
+    $this->assertEquals($role, AppRoles::find($role->key));
+});
+
+it('throws an exception when trying to attach an invalid string value', function () {
+    $this->expectException(InvalidArgumentException::class);
+
+    AppRoles::attach('NorseBlue\Heimdall\InvalidDefinedRole');
+});
+
+it('throws an exception when trying to attach an invalid object value', function () {
+    $this->expectException(InvalidArgumentException::class);
+
+    AppRoles::attach(new stdClass());
 });
 
 it('can create a role', function () {

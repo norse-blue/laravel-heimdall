@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace NorseBlue\Heimdall;
 
+use InvalidArgumentException;
+use NorseBlue\Heimdall\Permissions\DefinedPermission;
+
 abstract class AppPermissions
 {
     /**
@@ -36,9 +39,24 @@ abstract class AppPermissions
         return static::find($key) !== null;
     }
 
-    public static function attach(Permission $permission): void
+    /**
+     * @param string|Permission $permission
+     */
+    public static function attach($permission): Permission
     {
-        static::$permissions[$permission->key] = $permission;
+        if (is_string($permission)) {
+            if (! is_subclass_of($permission, DefinedPermission::class)) {
+                throw new InvalidArgumentException("The permission $permission is not of type " . DefinedPermission::class . ".");
+            }
+
+            return static::create(...array_values($permission::definition()));
+        }
+
+        if (! $permission instanceof Permission) {
+            throw new InvalidArgumentException("The permission is not of type " . Permission::class . ".");
+        }
+
+        return (static::$permissions[$permission->key] = $permission);
     }
 
     public static function create(string $key, string $name, string $description = ''): Permission

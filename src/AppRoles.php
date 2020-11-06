@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace NorseBlue\Heimdall;
 
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
+use NorseBlue\Heimdall\Roles\DefinedRole;
 
 abstract class AppRoles
 {
@@ -38,9 +40,24 @@ abstract class AppRoles
         return static::find($key) !== null;
     }
 
-    public static function attach(Role $role): void
+    /**
+     * @param string|Role $role
+     */
+    public static function attach($role): Role
     {
-        static::$roles[$role->key] = $role;
+        if (is_string($role)) {
+            if (! is_subclass_of($role, DefinedRole::class)) {
+                throw new InvalidArgumentException("The role $role is not of type " . DefinedRole::class . ".");
+            }
+
+            return static::create(...array_values($role::definition()));
+        }
+
+        if (! $role instanceof Role) {
+            throw new InvalidArgumentException("The role is not of type " . Role::class . ".");
+        }
+
+        return (static::$roles[$role->key] = $role);
     }
 
     /**
