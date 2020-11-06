@@ -34,6 +34,10 @@ trait HasRoles
      */
     public function getRolesAttribute(): array
     {
+        if (! isset($this->attributes[$this->getRolesColumn()])) {
+            return [];
+        }
+
         return AppRoles::valid(json_decode($this->attributes[$this->getRolesColumn()], true, 512, JSON_THROW_ON_ERROR));
     }
 

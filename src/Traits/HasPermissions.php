@@ -23,6 +23,10 @@ trait HasPermissions
      */
     public function getPermissionsAttribute(): array
     {
+        if (! isset($this->attributes[$this->getPermissionsColumn()])) {
+            return [];
+        }
+
         return AppPermissions::valid(json_decode($this->attributes[$this->getPermissionsColumn()], true, 512, JSON_THROW_ON_ERROR));
     }
 

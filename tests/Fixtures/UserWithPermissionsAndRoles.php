@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace NorseBlue\Heimdall\Tests\Fixtures;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use NorseBlue\Heimdall\Traits\HasPermissionsAndRoles;
 
-class UserWithRolesAndPermissions extends Authenticatable
+class UserWithPermissionsAndRoles extends Authenticatable
 {
+    use HasPermissionsAndRoles;
+
     protected $table = 'users';
 
     /**
