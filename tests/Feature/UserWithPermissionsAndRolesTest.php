@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Gate;
 use NorseBlue\Heimdall\AppRoles;
 use NorseBlue\Heimdall\Tests\Fixtures\UserWithPermissionsAndRoles;
 use function NorseBlue\Heimdall\Tests\createTestPermissions;
@@ -23,6 +24,16 @@ it('handles permissions correctly', function () {
     $this->assertTrue($user->hasPermission('test-permission-2'));
     $this->assertFalse($user->hasPermission('test-permission-3'));
     $this->assertFalse($user->hasPermission('nonexistent-permission'));
+
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-1'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-2'));
+    $this->assertFalse(Gate::forUser($user)->allows('test-permission-3'));
+    $this->assertFalse(Gate::forUser($user)->allows('nonexistent-permission'));
+
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-1'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-2'));
+    $this->assertTrue(Gate::forUser($user)->denies('test-permission-3'));
+    $this->assertTrue(Gate::forUser($user)->denies('nonexistent-permission'));
 });
 
 it('handles roles correctly', function () {
@@ -48,6 +59,16 @@ it('handles roles correctly', function () {
     $this->assertTrue($user->hasPermission('test-permission-2'));
     $this->assertFalse($user->hasPermission('test-permission-3'));
     $this->assertFalse($user->hasPermission('nonexistent-permission'));
+
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-1'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-2'));
+    $this->assertFalse(Gate::forUser($user)->allows('test-permission-3'));
+    $this->assertFalse(Gate::forUser($user)->allows('nonexistent-permission'));
+
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-1'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-2'));
+    $this->assertTrue(Gate::forUser($user)->denies('test-permission-3'));
+    $this->assertTrue(Gate::forUser($user)->denies('nonexistent-permission'));
 });
 
 it('handles permissions and roles correctly', function () {
@@ -76,6 +97,22 @@ it('handles permissions and roles correctly', function () {
     $this->assertTrue($user->hasRole('test-role-4'));
     $this->assertTrue($user->hasRole('test-role-5'));
     $this->assertFalse($user->hasRole('test-role-6'));
+
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-1'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-2'));
+    $this->assertFalse(Gate::forUser($user)->allows('test-permission-3'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-4'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-5'));
+    $this->assertFalse(Gate::forUser($user)->allows('test-permission-6'));
+    $this->assertFalse(Gate::forUser($user)->allows('nonexistent-permission'));
+
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-1'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-2'));
+    $this->assertTrue(Gate::forUser($user)->denies('test-permission-3'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-4'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-5'));
+    $this->assertTrue(Gate::forUser($user)->denies('test-permission-6'));
+    $this->assertTrue(Gate::forUser($user)->denies('nonexistent-permission'));
 });
 
 it('handles wildcard permission correctly', function () {
@@ -100,6 +137,22 @@ it('handles wildcard permission correctly', function () {
     $this->assertTrue($user->hasPermission('test-permission-5'));
     $this->assertTrue($user->hasPermission('test-permission-6'));
     $this->assertFalse($user->hasPermission('nonexistent-permission'));
+
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-1'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-2'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-3'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-4'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-5'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-6'));
+    $this->assertFalse(Gate::forUser($user)->allows('nonexistent-permission'));
+
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-1'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-2'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-3'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-4'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-5'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-6'));
+    $this->assertTrue(Gate::forUser($user)->denies('nonexistent-permission'));
 });
 
 it('handles wildcard permission from role correctly', function () {
@@ -125,4 +178,20 @@ it('handles wildcard permission from role correctly', function () {
     $this->assertTrue($user->hasPermission('test-permission-5'));
     $this->assertTrue($user->hasPermission('test-permission-6'));
     $this->assertFalse($user->hasPermission('nonexistent-permission'));
+
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-1'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-2'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-3'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-4'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-5'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-6'));
+    $this->assertFalse(Gate::forUser($user)->allows('nonexistent-permission'));
+
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-1'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-2'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-3'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-4'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-5'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-6'));
+    $this->assertTrue(Gate::forUser($user)->denies('nonexistent-permission'));
 });

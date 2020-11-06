@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace NorseBlue\Heimdall;
 
 use ArgumentCountError;
+use Illuminate\Contracts\Auth\Access\Authorizable;
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use NorseBlue\Heimdall\Console\InstallCommand;
@@ -29,6 +31,7 @@ class HeimdallServiceProvider extends ServiceProvider
         $this->configureCommands();
         $this->loadConfigEntities('heimdall.permissions', DefinesPermission::class);
         $this->loadConfigEntities('heimdall.roles', DefinesRole::class);
+        $this->registerPermissionsGate();
     }
 
     protected function configurePublishing(): void
@@ -85,5 +88,14 @@ class HeimdallServiceProvider extends ServiceProvider
                     Log::warning("Invalid entry found in ${key} config.", ['invalid-entry' => $item, 'exception' => $exception]);
                 }
             });
+    }
+
+    protected function registerPermissionsGate(): void
+    {
+        app(Gate::class)->before(function (Authorizable $user, string $permission) {
+            if (method_exists($user, 'hasPermission')) {
+                return $user->hasPermission($permission) ?: null;
+            }
+        });
     }
 }

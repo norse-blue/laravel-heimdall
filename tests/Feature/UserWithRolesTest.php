@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Gate;
 use NorseBlue\Heimdall\AppRoles;
 use NorseBlue\Heimdall\Tests\Fixtures\UserWithRoles;
 use function NorseBlue\Heimdall\Tests\clearAppRoles;
@@ -56,6 +57,16 @@ it('handles roles correctly', function () {
     $this->assertTrue($user->hasPermission('test-permission-2'));
     $this->assertFalse($user->hasPermission('test-permission-3'));
     $this->assertFalse($user->hasPermission('nonexistent-permission'));
+
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-1'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-2'));
+    $this->assertFalse(Gate::forUser($user)->allows('test-permission-3'));
+    $this->assertFalse(Gate::forUser($user)->allows('nonexistent-permission'));
+
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-1'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-2'));
+    $this->assertTrue(Gate::forUser($user)->denies('test-permission-3'));
+    $this->assertTrue(Gate::forUser($user)->denies('nonexistent-permission'));
 });
 
 it('handles wildcard permission from role correctly', function () {
@@ -75,4 +86,14 @@ it('handles wildcard permission from role correctly', function () {
     $this->assertTrue($user->hasPermission('test-permission-2'));
     $this->assertTrue($user->hasPermission('test-permission-3'));
     $this->assertFalse($user->hasPermission('nonexistent-permission'));
+
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-1'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-2'));
+    $this->assertTrue(Gate::forUser($user)->allows('test-permission-3'));
+    $this->assertFalse(Gate::forUser($user)->allows('nonexistent-permission'));
+
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-1'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-2'));
+    $this->assertFalse(Gate::forUser($user)->denies('test-permission-3'));
+    $this->assertTrue(Gate::forUser($user)->denies('nonexistent-permission'));
 });
