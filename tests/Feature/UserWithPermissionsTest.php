@@ -3,11 +3,13 @@
 declare(strict_types=1);
 
 use NorseBlue\Heimdall\Tests\Fixtures\UserWithPermissions;
+use function NorseBlue\Heimdall\Tests\clearAppPermissions;
 use function NorseBlue\Heimdall\Tests\createTestPermissions;
 use function NorseBlue\Heimdall\Tests\setUpDatabaseForPermissions;
 
 it('handles non initialized permissions correctly', function () {
     setUpDatabaseForPermissions($this->app);
+    clearAppPermissions();
     createTestPermissions(3);
 
     $user = UserWithPermissions::create([
@@ -19,6 +21,7 @@ it('handles non initialized permissions correctly', function () {
 
 it('handles empty permissions correctly', function () {
     setUpDatabaseForPermissions($this->app);
+    clearAppPermissions();
     createTestPermissions(3);
 
     $user = UserWithPermissions::create([
@@ -31,12 +34,15 @@ it('handles empty permissions correctly', function () {
 
 it('handles permissions correctly', function () {
     setUpDatabaseForPermissions($this->app);
+    clearAppPermissions();
     createTestPermissions(3);
 
     $user = UserWithPermissions::create([
         'email' => 'dev@norse.blue',
         'permissions' => ['test-permission-1', 'test-permission-2', 'nonexistent-permission'],
     ]);
+
+    $this->assertEquals(['test-permission-1', 'test-permission-2'], $user->permissions);
 
     $this->assertTrue($user->hasPermission('test-permission-1'));
     $this->assertTrue($user->hasPermission('test-permission-2'));

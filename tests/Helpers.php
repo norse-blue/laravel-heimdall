@@ -26,22 +26,41 @@ function setUpDatabaseForRoles($app): void
     });
 }
 
-function createTestPermissions(int $count): void
+function setUpDatabaseForPermissionsAndRoles($app): void
+{
+    $app['db']->connection()->getSchemaBuilder()->create('users', function (Blueprint $table) {
+        $table->increments('id');
+        $table->string('email');
+        $table->json('permissions')->nullable();
+        $table->json('roles')->nullable();
+        $table->timestamps();
+    });
+}
+
+function clearAppPermissions(): void
 {
     AppPermissions::clear();
-    foreach (range(1, $count) as $permission_index) {
+}
+
+function createTestPermissions(int $count, $start_with = 1): void
+{
+    foreach (range($start_with, $start_with + $count - 1) as $permission_index) {
         AppPermissions::create("test-permission-{$permission_index}", "Test permission {$permission_index}");
     }
 }
 
-function createTestRoles(int $count): void
+function clearAppRoles(): void
 {
-    createTestPermissions($count);
-    
     AppRoles::clear();
-    foreach (range(1, $count) as $role_index) {
+}
+
+function createTestRoles(int $count, $start_with = 1): void
+{
+    createTestPermissions($count, $start_with);
+
+    foreach (range($start_with, $start_with + $count - 1) as $role_index) {
         $permissions = [];
-        foreach (range(1, $role_index) as $permission_index) {
+        foreach (range($start_with, $role_index) as $permission_index) {
             $permissions[] = "test-permission-{$permission_index}";
         }
         AppRoles::create("test-role-{$role_index}", "Test role {$role_index}", $permissions);

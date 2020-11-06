@@ -7,6 +7,9 @@ namespace NorseBlue\Heimdall\Traits;
 use JsonException;
 use NorseBlue\Heimdall\AppPermissions;
 
+/**
+ * @property-read array<string> $permissions
+ */
 trait HasPermissions
 {
     public static function bootHasPermissions(): void
