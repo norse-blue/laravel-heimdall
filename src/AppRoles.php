@@ -47,17 +47,17 @@ abstract class AppRoles
     {
         if (is_string($role)) {
             if (! is_subclass_of($role, DefinedRole::class)) {
-                throw new InvalidArgumentException("The role $role is not of type " . DefinedRole::class . ".");
+                throw new InvalidArgumentException("The role ${role} is not of type " . DefinedRole::class . '.');
             }
 
             return static::create(...array_values($role::definition()));
         }
 
         if (! $role instanceof Role) {
-            throw new InvalidArgumentException("The role is not of type " . Role::class . ".");
+            throw new InvalidArgumentException('The role is not of type ' . Role::class . '.');
         }
 
-        return (static::$roles[$role->key] = $role);
+        return static::$roles[$role->key] = $role;
     }
 
     /**

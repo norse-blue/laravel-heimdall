@@ -6,9 +6,6 @@ namespace NorseBlue\Heimdall\Contracts;
 
 interface DefinesEntity
 {
-    /**
-     * @return string
-     */
     public static function key(): string;
 
     /**
