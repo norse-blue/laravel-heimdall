@@ -94,8 +94,12 @@ return [
         ],
         ReturnTypeHintSniff::class => [
             'exclude' => [
-                'src/Permissions/Admin/ViewDashboardPermission.php',
-                'src/Permissions/Users/CreateUsersPermission.php',
+                'src/Permissions/Admin/Dashboard/DashboardShowPermission.php',
+                'src/Permissions/Admin/Users/UsersCreatePermission.php',
+                'src/Permissions/Admin/Users/UsersDestroyPermission.php',
+                'src/Permissions/Admin/Users/UsersEditPermission.php',
+                'src/Permissions/Admin/Users/UsersListPermission.php',
+                'src/Permissions/Admin/Users/UsersShowPermission.php',
                 'src/Roles/AdminRole.php',
             ],
         ],

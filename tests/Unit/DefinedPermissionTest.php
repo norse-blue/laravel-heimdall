@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use NorseBlue\Heimdall\Permission;
-use NorseBlue\Heimdall\Permissions\Admin\ViewDashboardPermission;
-use NorseBlue\Heimdall\Permissions\Users\CreateUsersPermission;
+use NorseBlue\Heimdall\Permissions\Admin\Dashboard\DashboardShowPermission;
+use NorseBlue\Heimdall\Permissions\Admin\Users\UsersCreatePermission;
 use function Pest\Laravel\mock;
 
 it('can create a defined admin view dashboard permission', function () {
@@ -13,10 +13,10 @@ it('can create a defined admin view dashboard permission', function () {
         $mock->shouldReceive('trans')->andReturnUsing(fn ($text) => $text);
     });
 
-    $permission = new ViewDashboardPermission();
+    $permission = new DashboardShowPermission();
 
     $this->assertInstanceOf(Permission::class, $permission);
-    $this->assertEquals(ViewDashboardPermission::definition(), $permission->jsonSerialize());
+    $this->assertEquals(DashboardShowPermission::definition(), $permission->jsonSerialize());
 });
 
 it('can create a defined create users permission', function () {
@@ -24,8 +24,8 @@ it('can create a defined create users permission', function () {
         $mock->shouldReceive('get')->andReturnUsing(fn ($text) => $text);
         $mock->shouldReceive('trans')->andReturnUsing(fn ($text) => $text);
     });
-    $permission = new CreateUsersPermission();
+    $permission = new UsersCreatePermission();
 
     $this->assertInstanceOf(Permission::class, $permission);
-    $this->assertEquals(CreateUsersPermission::definition(), $permission->jsonSerialize());
+    $this->assertEquals(UsersCreatePermission::definition(), $permission->jsonSerialize());
 });

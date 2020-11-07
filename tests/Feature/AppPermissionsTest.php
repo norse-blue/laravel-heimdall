@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use NorseBlue\Heimdall\AppPermissions;
 use NorseBlue\Heimdall\Permission;
-use NorseBlue\Heimdall\Permissions\Admin\ViewDashboardPermission;
+use NorseBlue\Heimdall\Permissions\Admin\Dashboard\DashboardShowPermission;
 
 it('can clear permissions', function () {
     AppPermissions::clear();
@@ -32,7 +32,7 @@ it('can attach a permission', function () {
 it('can attach a defined permission', function () {
     AppPermissions::clear();
 
-    $role = AppPermissions::attach(ViewDashboardPermission::class);
+    $role = AppPermissions::attach(DashboardShowPermission::class);
 
     $this->assertTrue(AppPermissions::has($role->key));
     $this->assertEquals($role, AppPermissions::find($role->key));

@@ -22,11 +22,11 @@ return [
     | or
     | ['key' => 'create-posts', 'name' => 'Create posts', 'description' => 'Allows to create posts']
     | or
-    | NorseBlue\Heimdall\Permissions\Admin\CreateUsersPermission::class
+    | NorseBlue\Heimdall\Permissions\Admin\UsersCreatePermission::class
     |
     */
     'permissions' => [
-        // 
+        //
     ],
 
     /*
@@ -54,9 +54,9 @@ return [
     |
     */
     'roles' => [
-        // 
+        //
     ],
-    
+
     /*
     |--------------------------------------------------------------------------
     | The model's column names
@@ -72,14 +72,14 @@ return [
         /**
          * The default permissions column name.
          */
-        
+
         'permissions' => 'permissions',
-        
+
         /**
          * The default roles column name.
          */
-        
+
         'roles' => 'roles',
-        
+
     ],
 ];

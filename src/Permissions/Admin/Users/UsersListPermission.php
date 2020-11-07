@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace NorseBlue\Heimdall\Permissions\Users;
+namespace NorseBlue\Heimdall\Permissions\Admin\Users;
 
 use NorseBlue\Heimdall\Permissions\DefinedPermission;
 
-class CreateUsersPermission extends DefinedPermission
+class UsersListPermission extends DefinedPermission
 {
     public static function key(): string
     {
-        return 'users:create';
+        return 'admin-users:list';
     }
 
     public static function definition(): array
     {
         return [
             'key' => static::key(),
-            'name' => __('Create users') ?? '',
-            'description' => __('Allows the user to create users.') ?? '',
+            'name' => __('Admin Users - List') ?? '',
+            'description' => __('Allows the listing of users.') ?? '',
         ];
     }
 }
