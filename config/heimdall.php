@@ -12,8 +12,8 @@ return [
     | you can also set the permission description. Note that you can omit the
     | keys in the array, but either way the order matters.
     |
-    | You can also specify a FQCN of a permission class that inherits from
-    | NorseBlue\Heimdall\DefinedPermission that defines the permission.
+    | You can also specify a full qualified class name of a permission class that
+    | inherits from NorseBlue\Heimdall\DefinedPermission that defines the permission.
     |
     | E.g.
     | ['key' => 'create-posts', 'name' => 'Create posts']
@@ -40,8 +40,8 @@ return [
     | description. Note that you can omit the keys in the array, but either
     | way the order matters.
     |
-    | You can also specify a FQCN of a role class that inherits from
-    | NorseBlue\Heimdall\DefinedRole that defines the role.
+    | You can also specify a full qualified class name of a role class that
+    | inherits from NorseBlue\Heimdall\DefinedRole that defines the role.
     |
     | E.g.
     | ['key' => 'posts-editor', 'name' => 'Posts editor', 'permissions' => ['edit-posts', 'delete-posts']]
