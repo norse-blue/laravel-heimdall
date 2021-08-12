@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
         php: [8.0]
         dependency-version: [prefer-lowest, prefer-stable]
     name: PHP${{ matrix.php }}-${{ matrix.dependency-version }}-${{ matrix.os }}
@@ -24,13 +24,16 @@ jobs:
           extensions: bcmath, curl, dom, exif, fileinfo, gd, iconv, imagick, intl, libxml, mbstring, pcntl, pdo, pdo_sqlite, soap, sqlite, zip
           coverage: xdebug
 
+      - name: Check PHP modules
+        run: php -m
+
       - name: Setup problem matchers for PHP
         run: |
           echo "::add-matcher::${{ runner.tool_cache }}/php.json"
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: Install dependencies
-        run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+        run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
 
       - name: Run tests with coverage
         run: composer test:coverage
