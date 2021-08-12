@@ -6,6 +6,7 @@ namespace NorseBlue\Heimdall;
 
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
+use JetBrains\PhpStorm\Pure;
 use NorseBlue\Heimdall\Roles\DefinedRole;
 
 abstract class AppRoles
@@ -25,7 +26,8 @@ abstract class AppRoles
         return count(static::$roles);
     }
 
-    public static function empty(): bool
+    #[Pure]
+    public static function isEmpty(): bool
     {
         return static::count() === 0;
     }
@@ -39,11 +41,8 @@ abstract class AppRoles
     {
         return static::find($key) !== null;
     }
-
-    /**
-     * @param string|Role $role
-     */
-    public static function attach($role): Role
+    
+    public static function attach(string|Role $role): Role
     {
         if (is_string($role)) {
             if (! is_subclass_of($role, DefinedRole::class)) {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace NorseBlue\Heimdall\Roles;
 
+use JetBrains\PhpStorm\ArrayShape;
+
 class AdminRole extends DefinedRole
 {
     public static function key(): string
@@ -11,6 +13,12 @@ class AdminRole extends DefinedRole
         return 'admin';
     }
 
+    #[ArrayShape([
+        'key' => "string",
+        'name' => "string",
+        'permissions' => "string[]",
+        'description' => "string",
+    ])]
     public static function definition(): array
     {
         return [

@@ -96,6 +96,8 @@ class HeimdallServiceProvider extends ServiceProvider
             if (method_exists($user, 'hasPermission')) {
                 return $user->hasPermission($permission) ?: null;
             }
+
+            return null;
         });
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NorseBlue\Heimdall;
 
+use JetBrains\PhpStorm\ArrayShape;
 use JsonSerializable;
 use NorseBlue\HandyProperties\Traits\HasPropertyAccessors;
 use NorseBlue\Heimdall\Exceptions\InvalidRoleKeyException;
@@ -43,7 +44,7 @@ class Role implements JsonSerializable
     /**
      * @param string|array<string> $permissions
      */
-    public function __construct(string $key, string $name, $permissions, string $description = '')
+    public function __construct(string $key, string $name, array|string $permissions, string $description = '')
     {
         if ($key === '*') {
             throw new InvalidRoleKeyException('Wildcard key is not allowed for roles.');
@@ -59,14 +60,12 @@ class Role implements JsonSerializable
                 ->all();
     }
 
-    /**
-     * @return array<string, mixed>{
-     *  key: string,
-     *  name: string,
-     *  permissions: array,
-     *  description: string,
-     * }
-     */
+    #[ArrayShape([
+        'key' => "string",
+        'name' => "string",
+        'permissions' => "string[]",
+        'description' => "string"
+    ])]
     public function jsonSerialize(): array
     {
         return [

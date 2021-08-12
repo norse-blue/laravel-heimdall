@@ -8,13 +8,13 @@ use NorseBlue\Heimdall\Permissions\Admin\Dashboard\DashboardShowPermission;
 
 it('can clear permissions', function () {
     AppPermissions::clear();
-    $this->assertTrue(AppPermissions::empty());
+    $this->assertTrue(AppPermissions::isEmpty());
 
     AppPermissions::create('test-permission', 'Test permission', 'This is a test permission.');
-    $this->assertFalse(AppPermissions::empty());
+    $this->assertFalse(AppPermissions::isEmpty());
 
     AppPermissions::clear();
-    $this->assertTrue(AppPermissions::empty());
+    $this->assertTrue(AppPermissions::isEmpty());
 });
 
 it('can attach a permission', function () {
@@ -45,7 +45,7 @@ it('throws an exception when trying to attach an invalid string value', function
 });
 
 it('throws an exception when trying to attach an invalid object value', function () {
-    $this->expectException(InvalidArgumentException::class);
+    $this->expectException(TypeError::class);
 
     AppPermissions::attach(new stdClass());
 });

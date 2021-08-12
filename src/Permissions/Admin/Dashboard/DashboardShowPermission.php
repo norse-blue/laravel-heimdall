@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NorseBlue\Heimdall\Permissions\Admin\Dashboard;
 
+use JetBrains\PhpStorm\ArrayShape;
 use NorseBlue\Heimdall\Permissions\DefinedPermission;
 
 class DashboardShowPermission extends DefinedPermission
@@ -13,6 +14,11 @@ class DashboardShowPermission extends DefinedPermission
         return 'admin-dashboard:show';
     }
 
+    #[ArrayShape([
+        'key' => 'string',
+        'name' => 'string',
+        'description' => 'string',
+    ])]
     public static function definition(): array
     {
         return [

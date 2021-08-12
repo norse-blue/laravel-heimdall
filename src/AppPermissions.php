@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace NorseBlue\Heimdall;
 
 use InvalidArgumentException;
+use JetBrains\PhpStorm\Pure;
 use NorseBlue\Heimdall\Permissions\DefinedPermission;
 
 abstract class AppPermissions
@@ -24,7 +25,8 @@ abstract class AppPermissions
         return count(static::$permissions);
     }
 
-    public static function empty(): bool
+    #[Pure]
+    public static function isEmpty(): bool
     {
         return static::count() === 0;
     }
@@ -39,10 +41,7 @@ abstract class AppPermissions
         return static::find($key) !== null;
     }
 
-    /**
-     * @param string|Permission $permission
-     */
-    public static function attach($permission): Permission
+    public static function attach(string|Permission $permission): Permission
     {
         if (is_string($permission)) {
             if (! is_subclass_of($permission, DefinedPermission::class)) {

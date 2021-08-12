@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NorseBlue\Heimdall\Permissions\Admin\Users;
 
+use JetBrains\PhpStorm\ArrayShape;
 use NorseBlue\Heimdall\Permissions\DefinedPermission;
 
 class UsersEditPermission extends DefinedPermission
@@ -13,6 +14,11 @@ class UsersEditPermission extends DefinedPermission
         return 'admin-users:edit';
     }
 
+    #[ArrayShape([
+        'key' => 'string',
+        'name' => 'string',
+        'description' => 'string',
+    ])]
     public static function definition(): array
     {
         return [

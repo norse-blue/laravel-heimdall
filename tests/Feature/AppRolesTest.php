@@ -8,13 +8,13 @@ use NorseBlue\Heimdall\Roles\AdminRole;
 
 it('can clear roles', function () {
     AppRoles::clear();
-    $this->assertTrue(AppRoles::empty());
+    $this->assertTrue(AppRoles::isEmpty());
 
     AppRoles::create('test-role', 'Test role', [], 'This is a test role');
-    $this->assertFalse(AppRoles::empty());
+    $this->assertFalse(AppRoles::isEmpty());
 
     AppRoles::clear();
-    $this->assertTrue(AppRoles::empty());
+    $this->assertTrue(AppRoles::isEmpty());
 });
 
 it('can attach a role', function () {
@@ -45,7 +45,7 @@ it('throws an exception when trying to attach an invalid string value', function
 });
 
 it('throws an exception when trying to attach an invalid object value', function () {
-    $this->expectException(InvalidArgumentException::class);
+    $this->expectException(TypeError::class);
 
     AppRoles::attach(new stdClass());
 });

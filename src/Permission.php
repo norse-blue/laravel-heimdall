@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NorseBlue\Heimdall;
 
+use JetBrains\PhpStorm\ArrayShape;
 use JsonSerializable;
 use NorseBlue\HandyProperties\Traits\HasPropertyAccessors;
 
@@ -38,13 +39,11 @@ class Permission implements JsonSerializable
         $this->description = $description;
     }
 
-    /**
-     * @return array<string, string>{
-     *  key: string,
-     *  name: string,
-     *  description: string
-     * }
-     */
+    #[ArrayShape([
+        'key' => "string",
+        'name' => "string",
+        'description' => "string"
+    ])]
     public function jsonSerialize(): array
     {
         return [
