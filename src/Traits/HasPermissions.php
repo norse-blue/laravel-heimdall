@@ -53,7 +53,7 @@ trait HasPermissions
 
     public function hasPermission(string $key): bool
     {
-        return AppPermissions::has($key) && ($this->permissions === ['*'] || in_array($key, $this->permissions, true));
+        return AppPermissions::has($key) && ($this->permissions === ['*'] || in_array(AppPermissions::computeKey($key), $this->permissions, true));
     }
 
     protected function getPermissionsColumn(): string

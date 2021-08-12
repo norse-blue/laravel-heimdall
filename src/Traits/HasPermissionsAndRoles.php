@@ -41,7 +41,7 @@ trait HasPermissionsAndRoles
     {
         return AppPermissions::has($key) && (
             $this->all_permissions === ['*'] || in_array(
-                $key,
+                AppPermissions::computeKey($key),
                 $this->all_permissions,
                 true
             )

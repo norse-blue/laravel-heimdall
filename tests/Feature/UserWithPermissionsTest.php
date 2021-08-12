@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Gate;
+use NorseBlue\Heimdall\AppPermissions;
+use NorseBlue\Heimdall\Permissions\Admin\Dashboard\DashboardShowPermission;
 use NorseBlue\Heimdall\Tests\Fixtures\UserWithPermissions;
 
 use function NorseBlue\Heimdall\Tests\clearAppPermissions;
@@ -88,4 +90,22 @@ it('handles wildcard permission correctly', function () {
     $this->assertFalse(Gate::forUser($user)->denies('test-permission-2'));
     $this->assertFalse(Gate::forUser($user)->denies('test-permission-3'));
     $this->assertTrue(Gate::forUser($user)->denies('nonexistent-permission'));
+});
+
+it('handles defined permission correctly', function () {
+    setUpDatabaseForPermissions($this->app);
+    clearAppPermissions();
+
+    AppPermissions::attach(DashboardShowPermission::class);
+
+    $user = UserWithPermissions::create([
+        'email' => 'dev@norse.blue',
+        'permissions' => [
+            DashboardShowPermission::class,
+        ],
+    ]);
+
+    $this->assertTrue($user->hasPermission(DashboardShowPermission::class));
+    $this->assertTrue(Gate::forUser($user)->allows(DashboardShowPermission::class));
+    $this->assertFalse(Gate::forUser($user)->denies(DashboardShowPermission::class));
 });

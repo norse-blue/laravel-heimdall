@@ -34,12 +34,12 @@ abstract class AppRoles
 
     public static function find(string $key): ?Role
     {
-        return static::$roles[$key] ?? null;
+        return static::$roles[static::computeKey($key)] ?? null;
     }
 
     public static function has(string $key): bool
     {
-        return static::find($key) !== null;
+        return static::find(static::computeKey($key)) !== null;
     }
 
     public static function attach(string|Role $role): Role
@@ -80,7 +80,7 @@ abstract class AppRoles
             $roles = array_keys(static::$roles);
         }
 
-        return collect(array_intersect($roles, array_keys(static::$roles)))
+        return collect(array_intersect(static::computeKeys($roles), array_keys(static::$roles)))
             ->unique()
             ->sort()
             ->when($with_permissions, function (Collection $roles): Collection {
@@ -96,5 +96,29 @@ abstract class AppRoles
     public static function all(bool $with_permissions = false): array
     {
         return static::valid(['*'], $with_permissions);
+    }
+
+    /**
+     * @param array<string> $keys
+     *
+     * @return array<string>
+     */
+    public static function computeKeys(array $keys): array
+    {
+        $computed = [];
+        foreach ($keys as $key) {
+            $computed[] = static::computeKey($key);
+        }
+
+        return $computed;
+    }
+
+    public static function computeKey(string $key): string
+    {
+        if (is_subclass_of($key, DefinedRole::class)) {
+            return $key::key();
+        }
+
+        return $key;
     }
 }

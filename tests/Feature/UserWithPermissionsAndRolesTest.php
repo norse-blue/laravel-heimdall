@@ -3,7 +3,12 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Gate;
+use NorseBlue\Heimdall\AppPermissions;
 use NorseBlue\Heimdall\AppRoles;
+use NorseBlue\Heimdall\Permissions\Admin\Dashboard\DashboardShowPermission;
+use NorseBlue\Heimdall\Permissions\Admin\Users\UsersShowPermission;
+use NorseBlue\Heimdall\Role;
+use NorseBlue\Heimdall\Roles\AdminRole;
 use NorseBlue\Heimdall\Tests\Fixtures\UserWithPermissionsAndRoles;
 
 use function NorseBlue\Heimdall\Tests\createTestPermissions;
@@ -224,4 +229,31 @@ it('handles wildcard permission from role correctly', function () {
     $this->assertFalse(Gate::forUser($user)->denies('test-permission-5'));
     $this->assertFalse(Gate::forUser($user)->denies('test-permission-6'));
     $this->assertTrue(Gate::forUser($user)->denies('nonexistent-permission'));
+});
+
+it('handles defined permissions through roles correctly', function () {
+    setUpDatabaseForPermissionsAndRoles($this->app);
+
+    AppPermissions::attach(DashboardShowPermission::class);
+    AppPermissions::attach(UsersShowPermission::class);
+    AppRoles::attach(new Role('dashboard', 'Dashboard Test Role', DashboardShowPermission::key()));
+
+    $user = UserWithPermissionsAndRoles::create([
+        'email' => 'dev@norse.blue',
+        'roles' => [
+            'dashboard',
+        ],
+        'permissions' => [
+            UsersShowPermission::class,
+        ],
+    ]);
+
+    $this->assertTrue($user->hasRole('dashboard'));
+
+    $this->assertTrue($user->hasPermission(DashboardShowPermission::class));
+    $this->assertTrue($user->hasPermission(UsersShowPermission::class));
+    $this->assertTrue(Gate::forUser($user)->allows(DashboardShowPermission::class));
+    $this->assertTrue(Gate::forUser($user)->allows(UsersShowPermission::class));
+    $this->assertFalse(Gate::forUser($user)->denies(DashboardShowPermission::class));
+    $this->assertFalse(Gate::forUser($user)->denies(UsersShowPermission::class));
 });

@@ -75,7 +75,7 @@ trait HasRoles
 
     public function hasRole(string $key): bool
     {
-        return AppRoles::has($key) && in_array($key, $this->roles, true);
+        return AppRoles::has($key) && in_array(AppRoles::computeKey($key), $this->roles, true);
     }
 
     public function hasPermission(string $key): bool

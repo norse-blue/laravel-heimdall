@@ -33,12 +33,12 @@ abstract class AppPermissions
 
     public static function find(string $key): ?Permission
     {
-        return static::$permissions[$key] ?? null;
+        return static::$permissions[static::computeKey($key)] ?? null;
     }
 
     public static function has(string $key): bool
     {
-        return static::find($key) !== null;
+        return static::find(static::computeKey($key)) !== null;
     }
 
     public static function attach(string|Permission $permission): Permission
@@ -78,7 +78,7 @@ abstract class AppPermissions
             $permissions = array_keys(static::$permissions);
         }
 
-        return collect(array_intersect($permissions, array_keys(static::$permissions)))
+        return collect(array_intersect(static::computeKeys($permissions), array_keys(static::$permissions)))
             ->unique()
             ->sort()
             ->all();
@@ -90,5 +90,29 @@ abstract class AppPermissions
     public static function all(): array
     {
         return static::valid(['*']);
+    }
+
+    /**
+     * @param array<string> $keys
+     *
+     * @return array<string>
+     */
+    public static function computeKeys(array $keys): array
+    {
+        $computed = [];
+        foreach ($keys as $key) {
+            $computed[] = static::computeKey($key);
+        }
+
+        return $computed;
+    }
+
+    public static function computeKey(string $key): string
+    {
+        if (is_subclass_of($key, DefinedPermission::class)) {
+            return $key::key();
+        }
+
+        return $key;
     }
 }
