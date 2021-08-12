@@ -39,6 +39,13 @@ class Permission implements JsonSerializable
         $this->description = $description;
     }
 
+    /**
+     * @return array<string, string>{
+     *  key: string,
+     *  name: string,
+     *  description: string
+     * }
+     */
     #[ArrayShape([
         'key' => "string",
         'name' => "string",

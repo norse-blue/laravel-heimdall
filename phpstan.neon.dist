@@ -3,15 +3,3 @@ parameters:
   paths:
     - src
   ignoreErrors:
-    -
-      message: '#Cannot access property \$permissions on NorseBlue\\Heimdall\\Role\|null.#'
-      path: src/AppRoles.php
-    -
-      message: '#Method NorseBlue\\Heimdall\\Permissions\\[a-zA-Z0-9\\_]+::definition\(\) should return array#'
-      paths:
-        - src/Permissions/Admin/Dashboard/DashboardShowPermission.php
-        - src/Permissions/Admin/Users/UsersCreatePermission.php
-        - src/Permissions/Admin/Users/UsersDestroyPermission.php
-        - src/Permissions/Admin/Users/UsersEditPermission.php
-        - src/Permissions/Admin/Users/UsersListPermission.php
-        - src/Permissions/Admin/Users/UsersShowPermission.php

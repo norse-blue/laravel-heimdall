@@ -60,6 +60,14 @@ class Role implements JsonSerializable
                 ->all();
     }
 
+    /**
+     * @return array<string, mixed>{
+     *  key: string,
+     *  name: string,
+     *  permissions: array,
+     *  description: string,
+     * }
+     */
     #[ArrayShape([
         'key' => "string",
         'name' => "string",

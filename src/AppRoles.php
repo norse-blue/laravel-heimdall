@@ -84,7 +84,7 @@ abstract class AppRoles
             ->unique()
             ->sort()
             ->when($with_permissions, function (Collection $roles): Collection {
-                return $roles->map(fn (string $role) => [$role => static::find($role)->permissions])
+                return $roles->map(fn(string $role) => [$role => static::find($role)?->permissions])
                     ->collapse();
             })
             ->all();
