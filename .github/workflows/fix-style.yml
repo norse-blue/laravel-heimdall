@@ -1,24 +1,17 @@
-name: analyze-code
+name: fix-style
 
-on:
-  push:
-    paths:
-      - '**.php'
-      - 'phpstan.neon.dist'
-  pull_request:
-    paths:
-      - '**.php'
-      - 'phpstan.neon.dist'
+on: [push]
 
 jobs:
-  analyze-code:
+  fix-style:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         php: [8.0]
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -29,5 +22,13 @@ jobs:
       - name: Install dependencies
         run: composer update --prefer-dist --no-interaction --no-suggest
 
-      - name: Analyze code
-        run: composer analyze:github
+      - name: Check style
+        run: composer style:check
+
+      - name: Fix style
+        run: composer style:fix
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Fix styling

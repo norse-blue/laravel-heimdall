@@ -12,10 +12,10 @@ A clear and concise description of what the bug is.
 
 **Environment**
 Include as many relevant details about the environment you experienced the bug in and how to reproduce it.
-- Versions used (e.g. PHP 7.1, PHP 7.2):
-- Operating system and version (e.g. Ubuntu 18.04, Windows 10):
+- Versions used (e.g. PHP 7.3, PHP 8.0, PHP 8.1):
+- Operating system and version (e.g. Ubuntu 20.04, Windows 10):
 - Link to your project:
-- Other poackages installed:
+- Other packages installed:
 
 **To Reproduce**
 Steps to reproduce the behavior:

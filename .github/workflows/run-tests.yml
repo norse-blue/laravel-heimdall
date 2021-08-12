@@ -1,15 +1,15 @@
-name: tests
+name: run-tests
 
 on: [push, pull_request]
 
 jobs:
-  tests:
+  run-tests:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
       matrix:
         os: [ubuntu-latest, windows-latest]
-        php: [7.4]
+        php: [8.0]
         dependency-version: [prefer-lowest, prefer-stable]
     name: PHP${{ matrix.php }}-${{ matrix.dependency-version }}-${{ matrix.os }}
 
@@ -24,16 +24,16 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
           coverage: xdebug
 
-      - name: Setup Problem Matches
+      - name: Setup problem matchers for PHP
         run: |
           echo "::add-matcher::${{ runner.tool_cache }}/php.json"
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: Install dependencies
-        run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
+        run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
 
       - name: Run tests with coverage
-        run: composer coverage
+        run: composer test:coverage
 
       - name: Upload coverage to CodeClimate
         if: "!startsWith(matrix.os, 'windows')"
@@ -47,7 +47,7 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./build/coverage.xml
+          file: ${{github.workspace}}/build/coverage.xml
           env_vars: ${{ matrix.os }},PHP{{ matrix.php }}
           name: PHP${{ matrix.php }}-${{ matrix.dependency-version }}-${{ matrix.os }}
           fail_ci_if_error: false
