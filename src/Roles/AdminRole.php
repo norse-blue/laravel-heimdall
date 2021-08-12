@@ -15,9 +15,9 @@ class AdminRole extends DefinedRole
     {
         return [
             'key' => static::key(),
-            'name' => 'Administrator',
+            'name' => __('Administrator'),
             'permissions' => ['*'],
-            'description' => 'Application administrator',
+            'description' => __('Application administrator'),
         ];
     }
 }
