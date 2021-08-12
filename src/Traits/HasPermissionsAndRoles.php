@@ -39,6 +39,12 @@ trait HasPermissionsAndRoles
 
     public function hasPermission(string $key): bool
     {
-        return AppPermissions::has($key) && ($this->all_permissions === ['*'] || in_array($key, $this->all_permissions, true));
+        return AppPermissions::has($key) && (
+            $this->all_permissions === ['*'] || in_array(
+                $key,
+                $this->all_permissions,
+                true
+            )
+        );
     }
 }

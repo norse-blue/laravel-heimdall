@@ -46,7 +46,10 @@ class InstallCommand extends Command
     protected function installHeimdallServiceProvider(): void
     {
         // Service Providers...
-        copy(__DIR__ . '/../../stubs/app/Providers/HeimdallServiceProvider.php.stub', app_path('Providers/HeimdallServiceProvider.php'));
+        copy(
+            __DIR__ . '/../../stubs/app/Providers/HeimdallServiceProvider.php.stub',
+            app_path('Providers/HeimdallServiceProvider.php')
+        );
 
         $contents = file_get_contents(config_path('app.php'));
         if ($contents !== false && ! Str::contains($contents, 'App\\Providers\\HeimdallServiceProvider::class')) {

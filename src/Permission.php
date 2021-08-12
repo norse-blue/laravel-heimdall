@@ -49,7 +49,7 @@ class Permission implements JsonSerializable
     #[ArrayShape([
         'key' => "string",
         'name' => "string",
-        'description' => "string"
+        'description' => "string",
     ])]
     public function jsonSerialize(): array
     {

@@ -41,7 +41,7 @@ abstract class AppRoles
     {
         return static::find($key) !== null;
     }
-    
+
     public static function attach(string|Role $role): Role
     {
         if (is_string($role)) {

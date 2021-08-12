@@ -12,7 +12,7 @@ interface DefinesRole extends DefinesEntity
         'key' => "string",
         'name' => "string",
         'permissions' => "string[]",
-        'description' => "string"
+        'description' => "string",
     ])]
     public static function definition(): array;
 }

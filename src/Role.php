@@ -72,7 +72,7 @@ class Role implements JsonSerializable
         'key' => "string",
         'name' => "string",
         'permissions' => "string[]",
-        'description' => "string"
+        'description' => "string",
     ])]
     public function jsonSerialize(): array
     {

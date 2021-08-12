@@ -85,7 +85,10 @@ class HeimdallServiceProvider extends ServiceProvider
                         AppPermissions::create(...array_values($item));
                     }
                 } catch (ArgumentCountError $exception) {
-                    Log::warning("Invalid entry found in ${key} config.", ['invalid-entry' => $item, 'exception' => $exception]);
+                    Log::warning(
+                        "Invalid entry found in ${key} config.",
+                        ['invalid-entry' => $item, 'exception' => $exception]
+                    );
                 }
             });
     }
