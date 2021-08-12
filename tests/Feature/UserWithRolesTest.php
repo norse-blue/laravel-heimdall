@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Gate;
 use NorseBlue\Heimdall\AppRoles;
 use NorseBlue\Heimdall\Tests\Fixtures\UserWithRoles;
+
 use function NorseBlue\Heimdall\Tests\clearAppRoles;
 use function NorseBlue\Heimdall\Tests\createTestRoles;
 use function NorseBlue\Heimdall\Tests\setUpDatabaseForRoles;

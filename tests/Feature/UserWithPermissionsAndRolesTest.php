@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Gate;
 use NorseBlue\Heimdall\AppRoles;
 use NorseBlue\Heimdall\Tests\Fixtures\UserWithPermissionsAndRoles;
+
 use function NorseBlue\Heimdall\Tests\createTestPermissions;
 use function NorseBlue\Heimdall\Tests\createTestRoles;
 use function NorseBlue\Heimdall\Tests\setUpDatabaseForPermissionsAndRoles;
@@ -110,7 +111,10 @@ it('handles permissions and roles correctly', function () {
 
     $this->assertEquals(['test-permission-1', 'test-permission-2'], $user->permissions);
     $this->assertEquals(['test-permission-4', 'test-permission-5'], $user->roles_permissions);
-    $this->assertEquals(['test-permission-1', 'test-permission-2', 'test-permission-4', 'test-permission-5'], $user->all_permissions);
+    $this->assertEquals(
+        ['test-permission-1', 'test-permission-2', 'test-permission-4', 'test-permission-5'],
+        $user->all_permissions
+    );
 
     $this->assertTrue($user->hasPermission('test-permission-1'));
     $this->assertTrue($user->hasPermission('test-permission-2'));

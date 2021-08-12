@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Gate;
 use NorseBlue\Heimdall\Tests\Fixtures\UserWithPermissions;
+
 use function NorseBlue\Heimdall\Tests\clearAppPermissions;
 use function NorseBlue\Heimdall\Tests\createTestPermissions;
 use function NorseBlue\Heimdall\Tests\setUpDatabaseForPermissions;
