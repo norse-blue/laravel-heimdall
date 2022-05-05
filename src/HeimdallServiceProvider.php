@@ -67,7 +67,10 @@ class HeimdallServiceProvider extends ServiceProvider
             throw new InvalidEntityContractException("The contract ${contract} is not of type ${base_contract}.");
         }
 
-        collect(config($key))
+        /** @var array<string|array<string>> $entities */
+        $entities = config($key);
+
+        collect($entities)
             ->each(static function ($item) use ($key, $contract): void {
                 if (is_string($item)) {
                     if (! class_exists($item) || ! is_subclass_of($item, $contract)) {

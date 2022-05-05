@@ -17,12 +17,12 @@ abstract class AppPermissions
 
     public static function clear(): void
     {
-        static::$permissions = [];
+        self::$permissions = [];
     }
 
     public static function count(): int
     {
-        return count(static::$permissions);
+        return count(self::$permissions);
     }
 
     #[Pure]
@@ -33,7 +33,7 @@ abstract class AppPermissions
 
     public static function find(string $key): ?Permission
     {
-        return static::$permissions[static::computeKey($key)] ?? null;
+        return self::$permissions[static::computeKey($key)] ?? null;
     }
 
     public static function has(string $key): bool
@@ -57,7 +57,7 @@ abstract class AppPermissions
             throw new InvalidArgumentException('The permission is not of type ' . Permission::class . '.');
         }
 
-        return static::$permissions[$permission->key] = $permission;
+        return self::$permissions[$permission->key] = $permission;
     }
 
     public static function create(string $key, string $name, string $description = ''): Permission
@@ -75,10 +75,10 @@ abstract class AppPermissions
     public static function valid(array $permissions): array
     {
         if (in_array('*', $permissions, true)) {
-            $permissions = array_keys(static::$permissions);
+            $permissions = array_keys(self::$permissions);
         }
 
-        return collect(array_intersect(static::computeKeys($permissions), array_keys(static::$permissions)))
+        return collect(array_intersect(static::computeKeys($permissions), array_keys(self::$permissions)))
             ->unique()
             ->sort()
             ->all();

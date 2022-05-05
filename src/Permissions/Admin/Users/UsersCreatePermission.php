@@ -14,6 +14,13 @@ class UsersCreatePermission extends DefinedPermission
         return 'admin-users:create';
     }
 
+    /**
+     * @return array{
+     *     'key': string,
+     *     'name': string,
+     *     'description': string,
+     * }
+     */
     #[ArrayShape([
         'key' => 'string',
         'name' => 'string',
@@ -21,6 +28,7 @@ class UsersCreatePermission extends DefinedPermission
     ])]
     public static function definition(): array
     {
+        // @phpstan-ignore-next-line
         return [
             'key' => static::key(),
             'name' => __('Admin Users - Create') ?? '',

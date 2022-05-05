@@ -5,6 +5,7 @@ declare(strict_types=1);
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenNormalClasses;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenTraits;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\WhiteSpace\ArbitraryParenthesesSpacingSniff;
 use PHP_CodeSniffer\Standards\PEAR\Sniffs\WhiteSpace\ObjectOperatorIndentSniff;
 use SlevomatCodingStandard\Sniffs\Classes\SuperfluousExceptionNamingSniff;
 use SlevomatCodingStandard\Sniffs\ControlStructures\DisallowShortTernaryOperatorSniff;
@@ -80,6 +81,9 @@ return [
     ],
 
     'config' => [
+        ArbitraryParenthesesSpacingSniff::class => [
+            'ignoreNewlines' => true,
+        ],
         DisallowMixedTypeHintSniff::class => [
             'exclude' => [
                 'src/Contracts/DefinesEntity.php',

@@ -13,14 +13,23 @@ class AdminRole extends DefinedRole
         return 'admin';
     }
 
+    /**
+     * @return array{
+     *     'key': string,
+     *     'name': string,
+     *     'permissions': array<string>,
+     *     'description': string,
+     * }
+     */
     #[ArrayShape([
-        'key' => "string",
-        'name' => "string",
-        'permissions' => "string[]",
-        'description' => "string",
+        'key' => 'string',
+        'name' => 'string',
+        'permissions' => 'string[]',
+        'description' => 'string',
     ])]
     public static function definition(): array
     {
+        // @phpstan-ignore-next-line
         return [
             'key' => static::key(),
             'name' => __('Administrator'),

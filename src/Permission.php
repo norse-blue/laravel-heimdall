@@ -47,9 +47,9 @@ class Permission implements JsonSerializable
      * }
      */
     #[ArrayShape([
-        'key' => "string",
-        'name' => "string",
-        'description' => "string",
+        'key' => 'string',
+        'name' => 'string',
+        'description' => 'string',
     ])]
     public function jsonSerialize(): array
     {

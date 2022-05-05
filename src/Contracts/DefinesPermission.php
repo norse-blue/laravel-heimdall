@@ -8,6 +8,13 @@ use JetBrains\PhpStorm\ArrayShape;
 
 interface DefinesPermission extends DefinesEntity
 {
+    /**
+     * @return array{
+     *     'key': string,
+     *     'name': string,
+     *     'description': string,
+     * }
+     */
     #[ArrayShape([
         'key' => 'string',
         'name' => 'string',

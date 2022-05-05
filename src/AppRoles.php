@@ -18,12 +18,12 @@ abstract class AppRoles
 
     public static function clear(): void
     {
-        static::$roles = [];
+        self::$roles = [];
     }
 
     public static function count(): int
     {
-        return count(static::$roles);
+        return count(self::$roles);
     }
 
     #[Pure]
@@ -34,7 +34,7 @@ abstract class AppRoles
 
     public static function find(string $key): ?Role
     {
-        return static::$roles[static::computeKey($key)] ?? null;
+        return self::$roles[static::computeKey($key)] ?? null;
     }
 
     public static function has(string $key): bool
@@ -56,7 +56,7 @@ abstract class AppRoles
             throw new InvalidArgumentException('The role is not of type ' . Role::class . '.');
         }
 
-        return static::$roles[$role->key] = $role;
+        return self::$roles[$role->key] = $role;
     }
 
     /**
@@ -65,7 +65,7 @@ abstract class AppRoles
     public static function create(string $key, string $name, array $permissions, string $description = ''): Role
     {
         return tap(new Role($key, $name, $permissions, $description), static function (Role $role) use ($key): void {
-            static::$roles[$key] = $role;
+            self::$roles[$key] = $role;
         });
     }
 
@@ -77,14 +77,14 @@ abstract class AppRoles
     public static function valid(array $roles, bool $with_permissions = false): array
     {
         if (in_array('*', $roles, true)) {
-            $roles = array_keys(static::$roles);
+            $roles = array_keys(self::$roles);
         }
 
-        return collect(array_intersect(static::computeKeys($roles), array_keys(static::$roles)))
+        return collect(array_intersect(static::computeKeys($roles), array_keys(self::$roles)))
             ->unique()
             ->sort()
             ->when($with_permissions, function (Collection $roles): Collection {
-                return $roles->map(fn(string $role) => [$role => static::find($role)?->permissions])
+                return $roles->map(fn (string $role) => [$role => static::find($role)?->permissions])
                     ->collapse();
             })
             ->all();
