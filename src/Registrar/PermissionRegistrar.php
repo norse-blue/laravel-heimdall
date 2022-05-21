@@ -20,6 +20,11 @@ class PermissionRegistrar extends BaseRegistrar
         );
     }
 
+    /**
+     * @param array<string> $items
+     *
+     * @return array<string>
+     */
     public function filterValid(array $items): array
     {
         if (in_array('*', $items, true)) {

@@ -40,11 +40,10 @@ trait HasPermissions
 
     public function hasPermission(string $key): bool
     {
-        return Registrar::permissions()->has($key) && ($this->permissions === ['*'] || in_array(
-                    Registrar::permissions()->computeKey($key),
-                    $this->permissions,
-                    true
-                ));
+        return Registrar::permissions()->has($key)
+            && ($this->permissions === ['*']
+                || in_array(Registrar::permissions()->computeKey($key), $this->permissions, true)
+            );
     }
 
     /**

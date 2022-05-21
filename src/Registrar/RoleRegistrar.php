@@ -13,6 +13,9 @@ use NorseBlue\Heimdall\Roles\DefinedRole;
  */
 class RoleRegistrar extends BaseRegistrar
 {
+    /**
+     * @return array<string>
+     */
     public function all(bool $with_permissions = false): array
     {
         return $this->filterValid(['*'], $with_permissions);
@@ -29,6 +32,11 @@ class RoleRegistrar extends BaseRegistrar
         );
     }
 
+    /**
+     * @param array<string> $items
+     *
+     * @return array<string>
+     */
     public function filterValid(array $items, bool $with_permissions = false): array
     {
         if (in_array('*', $items, true)) {

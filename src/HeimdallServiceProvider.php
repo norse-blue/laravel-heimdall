@@ -83,12 +83,10 @@ class HeimdallServiceProvider extends ServiceProvider
         collect($entities)
             ->each(function ($params) use ($key, $type): void {
                 if (is_string($params)) {
-                    if (! ($class_exists = class_exists($params))
-                        || ! is_subclass_of($params, $type->definitionType())
-                    ) {
+                    if (! class_exists($params) || ! is_subclass_of($params, $type->definitionType())) {
                         Log::warning("Invalid entry found for ${key} config value.", [
                             'config-class' => $params,
-                            'class-exists' => $class_exists,
+                            'class-exists' => class_exists($params),
                             'expected-type' => $type->definitionType(),
                             'is-type' => false,
                         ]);

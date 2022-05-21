@@ -47,6 +47,7 @@ abstract class BaseRegistrar
 
             /**
              * @var DefinesEntity $item
+             *
              * @phpstan-ignore-next-line
              */
             return $this->create(...$item::definition());
@@ -68,7 +69,7 @@ abstract class BaseRegistrar
     public function computeKey(string $key): string
     {
         if (is_subclass_of($key, $this->getDefinitionType())) {
-            /** @var $key DefinedPermission|DefinedRole */
+            /** @var DefinedPermission|DefinedRole $key */
             return $key::key();
         }
 
@@ -103,9 +104,7 @@ abstract class BaseRegistrar
     abstract public function filterValid(array $items): array;
 
     /**
-     * @param string $key
-     *
-     * @return null|T
+     * @return T|null
      */
     public function find(string $key): mixed
     {

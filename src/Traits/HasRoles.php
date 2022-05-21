@@ -66,11 +66,10 @@ trait HasRoles
 
     public function hasPermission(string $key): bool
     {
-        return Registrar::permissions()->has($key) && ($this->permissions === ['*'] || in_array(
-                    $key,
-                    $this->permissions,
-                    true
-                ));
+        return Registrar::permissions()->has($key)
+            && ($this->permissions === ['*']
+                || in_array($key, $this->permissions, true)
+            );
     }
 
     public function hasRole(string $key): bool

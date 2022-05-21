@@ -2,14 +2,27 @@
 
 declare(strict_types=1);
 
+use NunoMaduro\PhpInsights\Domain\Insights\CyclomaticComplexityIsHigh;
+use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenDefineFunctions;
+use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenFinalClasses;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenNormalClasses;
+use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenPrivateMethods;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenTraits;
+use NunoMaduro\PhpInsights\Domain\Metrics\Architecture\Classes;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\WhiteSpace\ArbitraryParenthesesSpacingSniff;
 use PHP_CodeSniffer\Standards\PEAR\Sniffs\WhiteSpace\ObjectOperatorIndentSniff;
+use PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer;
+use SlevomatCodingStandard\Sniffs\Classes\ForbiddenPublicPropertySniff;
 use SlevomatCodingStandard\Sniffs\Classes\SuperfluousExceptionNamingSniff;
+use SlevomatCodingStandard\Sniffs\Commenting\InlineDocCommentDeclarationSniff;
+use SlevomatCodingStandard\Sniffs\Commenting\UselessFunctionDocCommentSniff;
 use SlevomatCodingStandard\Sniffs\ControlStructures\DisallowShortTernaryOperatorSniff;
+use SlevomatCodingStandard\Sniffs\Functions\FunctionLengthSniff;
+use SlevomatCodingStandard\Sniffs\Namespaces\AlphabeticallySortedUsesSniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\DeclareStrictTypesSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
 
@@ -66,46 +79,45 @@ return [
     ],
 
     'add' => [
-        //  ExampleMetric::class => [
-        //      ExampleInsight::class,
-        //  ]
+        Classes::class => [
+            ForbiddenFinalClasses::class,
+        ],
     ],
 
     'remove' => [
+        AlphabeticallySortedUsesSniff::class,
+        DeclareStrictTypesSniff::class,
+        DisallowMixedTypeHintSniff::class,
         DisallowShortTernaryOperatorSniff::class,
+        ForbiddenDefineFunctions::class,
         ForbiddenNormalClasses::class,
+        ForbiddenPublicPropertySniff::class,
         ForbiddenTraits::class,
+        InlineDocCommentDeclarationSniff::class,
         LineLengthSniff::class,
         ObjectOperatorIndentSniff::class,
+        ParameterTypeHintSniff::class,
+        PropertyTypeHintSniff::class,
+        ReturnTypeHintSniff::class,
         SuperfluousExceptionNamingSniff::class,
+        UselessFunctionDocCommentSniff::class,
     ],
 
     'config' => [
         ArbitraryParenthesesSpacingSniff::class => [
             'ignoreNewlines' => true,
         ],
-        DisallowMixedTypeHintSniff::class => [
-            'exclude' => [
-                'src/Contracts/DefinesEntity.php',
-                'src/Contracts/DefinesRole.php',
-                'src/Role.php',
-            ],
+        CyclomaticComplexityIsHigh::class => [
+            'maxComplexity' => 5,
         ],
-        PropertyTypeHintSniff::class => [
-            'exclude' => [
-                'src/Console/InstallCommand.php',
-            ],
+        ForbiddenPrivateMethods::class => [
+            'title' => 'The usage of private methods is not idiomatic in Laravel.',
         ],
-        ReturnTypeHintSniff::class => [
-            'exclude' => [
-                'src/Permissions/Admin/Dashboard/DashboardShowPermission.php',
-                'src/Permissions/Admin/Users/UsersCreatePermission.php',
-                'src/Permissions/Admin/Users/UsersDestroyPermission.php',
-                'src/Permissions/Admin/Users/UsersEditPermission.php',
-                'src/Permissions/Admin/Users/UsersListPermission.php',
-                'src/Permissions/Admin/Users/UsersShowPermission.php',
-                'src/Roles/AdminRole.php',
-            ],
+        FunctionLengthSniff::class => [
+            'maxLinesLength' => 30,
+        ],
+        MethodArgumentSpaceFixer::class => [
+            'on_multiline' => 'ignore',
         ],
     ],
 
@@ -121,11 +133,11 @@ return [
     */
 
     'requirements' => [
-//        'min-quality' => 0,
-//        'min-complexity' => 0,
-//        'min-architecture' => 0,
-//        'min-style' => 0,
-//        'disable-security-check' => false,
+        //        'min-quality' => 0,
+        //        'min-complexity' => 0,
+        //        'min-architecture' => 0,
+        //        'min-style' => 0,
+        //        'disable-security-check' => false,
     ],
 
     /*
