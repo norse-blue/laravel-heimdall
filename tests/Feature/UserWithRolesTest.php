@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Gate;
-use NorseBlue\Heimdall\AppRoles;
+use NorseBlue\Heimdall\Facades\Registrar;
 use NorseBlue\Heimdall\Permissions\Admin\Dashboard\DashboardShowPermission;
 use NorseBlue\Heimdall\Roles\AdminRole;
 use NorseBlue\Heimdall\Tests\Fixtures\UserWithRoles;
@@ -76,7 +76,7 @@ it('handles wildcard permission from role correctly', function () {
     setUpDatabaseForRoles($this->app);
     clearAppRoles();
     createTestRoles(3);     // Also creates test-permission-1, test-permission-2 and test-permission-3
-    AppRoles::create('wildcard', 'Wildcard Role', ['*']);
+    Registrar::roles()->create('wildcard', 'Wildcard Role', permissions: ['*']);
 
     $user = UserWithRoles::create([
         'email' => 'dev@norse.blue',
@@ -105,7 +105,8 @@ it('handles defined permissions through roles correctly', function () {
     setUpDatabaseForRoles($this->app);
     clearAppRoles();
 
-    AppRoles::attach(AdminRole::class);
+    Registrar::permissions()->attach(DashboardShowPermission::class);
+    Registrar::roles()->attach(AdminRole::class);
 
     $user = UserWithRoles::create([
         'email' => 'dev@norse.blue',

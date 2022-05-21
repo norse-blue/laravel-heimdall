@@ -6,10 +6,15 @@ namespace NorseBlue\Heimdall\Contracts;
 
 interface DefinesEntity
 {
-    public static function key(): string;
-
     /**
-     * @return array<string, mixed>
+     * @return array{
+     *   'key': string,
+     *   'name': string,
+     *   'description': string,
+     *   'permissions?': array<string>,
+     * }
      */
     public static function definition(): array;
+
+    public static function key(): string;
 }

@@ -4,16 +4,10 @@ declare(strict_types=1);
 
 namespace NorseBlue\Heimdall\Permissions\Admin\Users;
 
-use JetBrains\PhpStorm\ArrayShape;
 use NorseBlue\Heimdall\Permissions\DefinedPermission;
 
 class UsersEditPermission extends DefinedPermission
 {
-    public static function key(): string
-    {
-        return 'admin-users:edit';
-    }
-
     /**
      * @return array{
      *     'key': string,
@@ -21,11 +15,6 @@ class UsersEditPermission extends DefinedPermission
      *     'description': string,
      * }
      */
-    #[ArrayShape([
-        'key' => 'string',
-        'name' => 'string',
-        'description' => 'string',
-    ])]
     public static function definition(): array
     {
         // @phpstan-ignore-next-line
@@ -34,5 +23,10 @@ class UsersEditPermission extends DefinedPermission
             'name' => __('Admin Users - Edit') ?? '',
             'description' => __('Allows the edition of users.') ?? '',
         ];
+    }
+
+    public static function key(): string
+    {
+        return 'admin-users:edit';
     }
 }

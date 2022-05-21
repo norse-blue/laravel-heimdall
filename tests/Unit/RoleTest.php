@@ -9,8 +9,8 @@ it('can retrieve properties', function () {
     $role = new Role(
         'test',
         'Test role',
+        'This is a test role',
         ['permission-1', 'permission-2', 'permission-3'],
-        'This is a test role'
     );
 
     $this->assertEquals('test', $role->key);
@@ -23,8 +23,8 @@ it('serializes to json', function () {
     $role = new Role(
         'test',
         'Test role',
+        'This is a test role',
         ['permission-1', 'permission-2', 'permission-3'],
-        'This is a test role'
     );
 
     $this->assertEquals([
@@ -38,5 +38,5 @@ it('serializes to json', function () {
 it('throws exception if wildcard is used as role key', function () {
     $this->expectException(InvalidRoleKeyException::class);
 
-    new Role('*', 'wildcard', []);
+    new Role('*', 'wildcard', permissions: []);
 });

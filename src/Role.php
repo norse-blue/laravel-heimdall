@@ -4,55 +4,29 @@ declare(strict_types=1);
 
 namespace NorseBlue\Heimdall;
 
-use JetBrains\PhpStorm\ArrayShape;
-use JsonSerializable;
-use NorseBlue\HandyProperties\Traits\HasPropertyAccessors;
+use NorseBlue\Heimdall\Concerns\Entity;
 use NorseBlue\Heimdall\Exceptions\InvalidRoleKeyException;
 
-/**
- * @property-read string $key
- * @property-read string $name
- * @property-read array<string> $permissions
- * @property-read string $description
- */
-class Role implements JsonSerializable
+class Role extends Entity
 {
-    use HasPropertyAccessors;
-
     /**
-     * The key identifier for the role.
-     */
-    private string $key;
-
-    /**
-     * The name of the role.
-     */
-    private string $name;
-
-    /**
-     * The role's description.
-     */
-    private string $description;
-
-    /**
-     * The role's permissions.
-     *
      * @var array<string>
      */
-    private array $permissions;
+    public readonly array $permissions;
 
     /**
-     * @param string|array<string> $permissions
+     * @param array<string>|string $permissions
      */
-    public function __construct(string $key, string $name, array|string $permissions, string $description = '')
-    {
+    public function __construct(
+        public readonly string $key,
+        public readonly string $name,
+        public readonly string $description = '',
+        array|string $permissions = []
+    ) {
         if ($key === '*') {
             throw new InvalidRoleKeyException('Wildcard key is not allowed for roles.');
         }
 
-        $this->key = $key;
-        $this->name = $name;
-        $this->description = $description;
         $this->permissions = is_string($permissions) ? [$permissions]
             : collect($permissions)
                 ->unique()
@@ -61,49 +35,18 @@ class Role implements JsonSerializable
     }
 
     /**
-     * @return array<string, mixed>{
+     * @return array{
      *  key: string,
      *  name: string,
-     *  permissions: array,
      *  description: string,
+     *  permissions: array<string>,
      * }
      */
-    #[ArrayShape([
-        'key' => 'string',
-        'name' => 'string',
-        'permissions' => 'string[]',
-        'description' => 'string',
-    ])]
     public function jsonSerialize(): array
     {
-        return [
-            'key' => $this->key,
-            'name' => $this->name,
-            'permissions' => $this->permissions,
-            'description' => $this->description,
-        ];
-    }
-
-    protected function accessorKey(): string
-    {
-        return $this->key;
-    }
-
-    protected function accessorName(): string
-    {
-        return $this->name;
-    }
-
-    protected function accessorDescription(): string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @return array<string>
-     */
-    protected function accessorPermissions(): array
-    {
-        return $this->permissions;
+        return array_merge(
+            parent::jsonSerialize(),
+            ['permissions' => $this->permissions],
+        );
     }
 }

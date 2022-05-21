@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace NorseBlue\Heimdall\Traits;
 
 use JsonException;
-use NorseBlue\Heimdall\AppPermissions;
+use NorseBlue\Heimdall\Facades\Registrar;
 
 /**
  * @property-read array<string> $all_permissions
@@ -39,12 +39,12 @@ trait HasPermissionsAndRoles
 
     public function hasPermission(string $key): bool
     {
-        return AppPermissions::has($key) && (
-            $this->all_permissions === ['*'] || in_array(
-                AppPermissions::computeKey($key),
-                $this->all_permissions,
-                true
-            )
-        );
+        return Registrar::permissions()->has($key) && (
+                $this->all_permissions === ['*'] || in_array(
+                    Registrar::permissions()->computeKey($key),
+                    $this->all_permissions,
+                    true
+                )
+            );
     }
 }

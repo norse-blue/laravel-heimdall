@@ -3,12 +3,10 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Gate;
-use NorseBlue\Heimdall\AppPermissions;
-use NorseBlue\Heimdall\AppRoles;
+use NorseBlue\Heimdall\Facades\Registrar;
 use NorseBlue\Heimdall\Permissions\Admin\Dashboard\DashboardShowPermission;
 use NorseBlue\Heimdall\Permissions\Admin\Users\UsersShowPermission;
 use NorseBlue\Heimdall\Role;
-use NorseBlue\Heimdall\Roles\AdminRole;
 use NorseBlue\Heimdall\Tests\Fixtures\UserWithPermissionsAndRoles;
 
 use function NorseBlue\Heimdall\Tests\createTestPermissions;
@@ -158,11 +156,11 @@ it('handles wildcard permission correctly', function () {
     $user = UserWithPermissionsAndRoles::create([
         'email' => 'dev@norse.blue',
         'permissions' => ['*'],
-        'roles' => ['test-role-1'],
+        'roles' => ['test-role-4'],
     ]);
 
     $this->assertEquals(['*'], $user->permissions);
-    $this->assertEquals(['test-permission-1'], $user->roles_permissions);
+    $this->assertEquals(['test-permission-4'], $user->roles_permissions);
     $this->assertEquals(['*'], $user->all_permissions);
 
     $this->assertTrue($user->hasPermission('test-permission-1'));
@@ -194,7 +192,7 @@ it('handles wildcard permission from role correctly', function () {
     setUpDatabaseForPermissionsAndRoles($this->app);
     createTestPermissions(3);
     createTestRoles(3, 4);      // Also creates test-permission-4, test-permission-5 and test-permission-6
-    AppRoles::create('wildcard', 'Wildcard Role', ['*']);
+    Registrar::roles()->create('wildcard', 'Wildcard Role', permissions: ['*']);
 
     $user = UserWithPermissionsAndRoles::create([
         'email' => 'dev@norse.blue',
@@ -234,9 +232,9 @@ it('handles wildcard permission from role correctly', function () {
 it('handles defined permissions through roles correctly', function () {
     setUpDatabaseForPermissionsAndRoles($this->app);
 
-    AppPermissions::attach(DashboardShowPermission::class);
-    AppPermissions::attach(UsersShowPermission::class);
-    AppRoles::attach(new Role('dashboard', 'Dashboard Test Role', DashboardShowPermission::key()));
+    Registrar::permissions()->attach(DashboardShowPermission::class);
+    Registrar::permissions()->attach(UsersShowPermission::class);
+    Registrar::roles()->attach(new Role('dashboard', 'Dashboard Test Role', permissions: DashboardShowPermission::key()));
 
     $user = UserWithPermissionsAndRoles::create([
         'email' => 'dev@norse.blue',

@@ -4,16 +4,10 @@ declare(strict_types=1);
 
 namespace NorseBlue\Heimdall\Permissions\Admin\Users;
 
-use JetBrains\PhpStorm\ArrayShape;
 use NorseBlue\Heimdall\Permissions\DefinedPermission;
 
 class UsersDestroyPermission extends DefinedPermission
 {
-    public static function key(): string
-    {
-        return 'admin-users:destroy';
-    }
-
     /**
      * @return array{
      *     'key': string,
@@ -21,11 +15,6 @@ class UsersDestroyPermission extends DefinedPermission
      *     'description': string,
      * }
      */
-    #[ArrayShape([
-        'key' => 'string',
-        'name' => 'string',
-        'description' => 'string',
-    ])]
     public static function definition(): array
     {
         // @phpstan-ignore-next-line
@@ -34,5 +23,10 @@ class UsersDestroyPermission extends DefinedPermission
             'name' => __('Admin Users - Destroy') ?? '',
             'description' => __('Allows the destruction of users.') ?? '',
         ];
+    }
+
+    public static function key(): string
+    {
+        return 'admin-users:destroy';
     }
 }
