@@ -18,7 +18,7 @@ system for Laravel. It is built upon the roles and permissions concepts.
 ## Installation
 
 >Requirements:
->- [PHP 8.0+](https://php.net/releases)
+>- [PHP 8.1+](https://php.net/releases)
 
 Install this package using Composer:
 
