@@ -3,8 +3,7 @@
 namespace NorseBlue\Heimdall\Tests;
 
 use Illuminate\Database\Schema\Blueprint;
-use NorseBlue\Heimdall\AppPermissions;
-use NorseBlue\Heimdall\AppRoles;
+use NorseBlue\Heimdall\Facades\Registrar;
 
 function setUpDatabaseForPermissions($app): void
 {
@@ -39,19 +38,19 @@ function setUpDatabaseForPermissionsAndRoles($app): void
 
 function clearAppPermissions(): void
 {
-    AppPermissions::clear();
+    Registrar::permissions()->clear();
 }
 
 function createTestPermissions(int $count, $start_with = 1): void
 {
     foreach (range($start_with, $start_with + $count - 1) as $permission_index) {
-        AppPermissions::create("test-permission-{$permission_index}", "Test permission {$permission_index}");
+        Registrar::permissions()->create("test-permission-{$permission_index}", "Test permission {$permission_index}");
     }
 }
 
 function clearAppRoles(): void
 {
-    AppRoles::clear();
+    Registrar::roles()->clear();
 }
 
 function createTestRoles(int $count, $start_with = 1): void
@@ -63,6 +62,6 @@ function createTestRoles(int $count, $start_with = 1): void
         foreach (range($start_with, $role_index) as $permission_index) {
             $permissions[] = "test-permission-{$permission_index}";
         }
-        AppRoles::create("test-role-{$role_index}", "Test role {$role_index}", $permissions);
+        Registrar::roles()->create("test-role-{$role_index}", "Test role {$role_index}", permissions: $permissions);
     }
 }

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace NorseBlue\Heimdall\Contracts;
 
-use JetBrains\PhpStorm\ArrayShape;
-
 interface DefinesRole extends DefinesEntity
 {
-    #[ArrayShape([
-        'key' => "string",
-        'name' => "string",
-        'permissions' => "string[]",
-        'description' => "string",
-    ])]
+    /**
+     * @return array{
+     *   'key': string,
+     *   'name': string,
+     *   'description': string,
+     *   'permissions': array<string>,
+     * }
+     */
     public static function definition(): array;
 }

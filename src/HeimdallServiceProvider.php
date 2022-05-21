@@ -10,39 +10,43 @@ use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use NorseBlue\Heimdall\Console\InstallCommand;
-use NorseBlue\Heimdall\Contracts\DefinesEntity;
-use NorseBlue\Heimdall\Contracts\DefinesPermission;
-use NorseBlue\Heimdall\Contracts\DefinesRole;
-use NorseBlue\Heimdall\Exceptions\InvalidEntityContractException;
+use NorseBlue\Heimdall\Enums\EntityType;
+use NorseBlue\Heimdall\Facades\Registrar as RegistrarFacade;
+use NorseBlue\Heimdall\Registrar\PermissionRegistrar;
+use NorseBlue\Heimdall\Registrar\RoleRegistrar;
 
-/**
- * @codeCoverageIgnore
- */
 class HeimdallServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-        $this->mergeConfigFrom(__DIR__ . '/../config/heimdall.php', 'heimdall');
-    }
+    public const REGISTRAR_ALIAS = 'heimdall-registrar';
 
     public function boot(): void
     {
         $this->configurePublishing();
         $this->configureCommands();
-        $this->loadConfigEntities('heimdall.permissions', DefinesPermission::class);
-        $this->loadConfigEntities('heimdall.roles', DefinesRole::class);
+        $this->loadConfigEntities('heimdall.permissions', EntityType::Permission);
+        $this->loadConfigEntities('heimdall.roles', EntityType::Role);
         $this->registerPermissionsGate();
     }
 
-    protected function configurePublishing(): void
+    /**
+     * @return array<string>
+     */
+    public function provides(): array
     {
-        if (! $this->app->runningInConsole()) {
-            return;
-        }
+        return [
+            Registrar::class,
+            self::REGISTRAR_ALIAS,
+        ];
+    }
 
-        $this->publishes([
-            __DIR__ . '/../config/heimdall.php' => config_path('heimdall.php'),
-        ], 'heimdall-config');
+    public function register(): void
+    {
+        $this->mergeConfigFrom(__DIR__ . '/../config/heimdall.php', 'heimdall');
+        $this->app->singleton(Registrar::class, fn ($app) => new Registrar(
+            $app->make(PermissionRegistrar::class),
+            $app->make(RoleRegistrar::class),
+        ));
+        $this->app->alias(Registrar::class, self::REGISTRAR_ALIAS);
     }
 
     protected function configureCommands(): void
@@ -56,46 +60,73 @@ class HeimdallServiceProvider extends ServiceProvider
         ]);
     }
 
-    /**
-     * @param string $key The config key that holds the entities.
-     * @param string $contract The full qualified contract that must implement the entity.
-     */
-    protected function loadConfigEntities(string $key, string $contract): void
+    protected function configurePublishing(): void
     {
-        $base_contract = DefinesEntity::class;
-        if (! is_subclass_of($contract, $base_contract)) {
-            throw new InvalidEntityContractException("The contract ${contract} is not of type ${base_contract}.");
+        if (! $this->app->runningInConsole()) {
+            return;
         }
 
-        collect(config($key))
-            ->each(static function ($item) use ($key, $contract): void {
-                if (is_string($item)) {
-                    if (! class_exists($item) || ! is_subclass_of($item, $contract)) {
-                        Log::warning("Invalid entry found in ${key} config value.", ['invalid-entry' => $item]);
+        $this->publishes([
+            __DIR__ . '/../config/heimdall.php' => config_path('heimdall.php'),
+        ], 'heimdall-config');
+    }
+
+    /**
+     * @param string $key The config key that holds the entities.
+     * @param EntityType $type The type of entity we want to load from config.
+     */
+    protected function loadConfigEntities(string $key, EntityType $type): void
+    {
+        /** @var array<string> $entities */
+        $entities = config($key);
+
+        collect($entities)
+            ->each(function ($params) use ($key, $type): void {
+                if (is_string($params)) {
+                    if (! class_exists($params) || ! is_subclass_of($params, $type->definitionType())) {
+                        Log::warning("Invalid entry found for ${key} config value.", [
+                            'config-class' => $params,
+                            'class-exists' => class_exists($params),
+                            'expected-type' => $type->definitionType(),
+                            'is-type' => false,
+                        ]);
 
                         return;
                     }
-                    $item = $item::definition();
+
+                    $params = $params::definition();
                 }
 
                 try {
-                    if (array_key_exists('permissions', $item)) {
-                        AppRoles::create(...array_values($item));
-                    } else {
-                        AppPermissions::create(...array_values($item));
-                    }
+                    $this->registerEntity($type, $params);
                 } catch (ArgumentCountError $exception) {
                     Log::warning(
                         "Invalid entry found in ${key} config.",
-                        ['invalid-entry' => $item, 'exception' => $exception]
+                        ['invalid-entry' => $params, 'exception' => $exception]
                     );
                 }
             });
     }
 
+    /**
+     * @param array{
+     *   key: string,
+     *   name: string,
+     *   description: string,
+     *   permissions?: array<string>,
+     * } $params
+     */
+    protected function registerEntity(EntityType $type, array $params): void
+    {
+        RegistrarFacade::create($type, $params);
+    }
+
     protected function registerPermissionsGate(): void
     {
-        app(Gate::class)->before(function (Authorizable $user, string $permission) {
+        /** @var Gate $gate */
+        $gate = app(Gate::class);
+
+        $gate->before(function (Authorizable $user, string $permission) {
             if (method_exists($user, 'hasPermission')) {
                 return $user->hasPermission($permission) ?: null;
             }

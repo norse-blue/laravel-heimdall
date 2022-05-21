@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Gate;
-use NorseBlue\Heimdall\AppPermissions;
+use NorseBlue\Heimdall\Facades\Registrar;
 use NorseBlue\Heimdall\Permissions\Admin\Dashboard\DashboardShowPermission;
 use NorseBlue\Heimdall\Tests\Fixtures\UserWithPermissions;
 
@@ -96,7 +96,7 @@ it('handles defined permission correctly', function () {
     setUpDatabaseForPermissions($this->app);
     clearAppPermissions();
 
-    AppPermissions::attach(DashboardShowPermission::class);
+    Registrar::permissions()->attach(DashboardShowPermission::class);
 
     $user = UserWithPermissions::create([
         'email' => 'dev@norse.blue',

@@ -2,102 +2,109 @@
 
 declare(strict_types=1);
 
-use NorseBlue\Heimdall\AppRoles;
+use NorseBlue\Heimdall\Facades\Registrar;
 use NorseBlue\Heimdall\Role;
 use NorseBlue\Heimdall\Roles\AdminRole;
 
 it('can clear roles', function () {
-    AppRoles::clear();
-    $this->assertTrue(AppRoles::isEmpty());
+    Registrar::roles()->clear();
+    $this->assertTrue(Registrar::roles()->isEmpty());
 
-    AppRoles::create('test-role', 'Test role', [], 'This is a test role');
-    $this->assertFalse(AppRoles::isEmpty());
+    Registrar::roles()->create('test-role', 'Test role', 'This is a test role', []);
+    $this->assertFalse(Registrar::roles()->isEmpty());
 
-    AppRoles::clear();
-    $this->assertTrue(AppRoles::isEmpty());
+    Registrar::roles()->clear();
+    $this->assertTrue(Registrar::roles()->isEmpty());
 });
 
 it('can attach a role', function () {
-    AppRoles::clear();
+    Registrar::roles()->clear();
 
     $role = tap(
-        new Role('test-role', 'Test role', [], 'This is a test role.'),
-        static fn ($role) => AppRoles::attach($role)
+        new Role('test-role', 'Test role', 'This is a test role.', []),
+        static fn ($role) => Registrar::roles()->attach($role)
     );
 
-    $this->assertTrue(AppRoles::has($role->key));
-    $this->assertEquals($role, AppRoles::find($role->key));
+    $this->assertTrue(Registrar::roles()->has($role->key));
+    $this->assertEquals($role, Registrar::roles()->find($role->key));
 });
 
 it('can attach a defined role', function () {
-    AppRoles::clear();
+    Registrar::roles()->clear();
 
-    $role = AppRoles::attach(AdminRole::class);
+    $role = Registrar::roles()->attach(AdminRole::class);
 
-    $this->assertTrue(AppRoles::has($role->key));
-    $this->assertEquals($role, AppRoles::find($role->key));
+    $this->assertTrue(Registrar::roles()->has($role->key));
+    $this->assertEquals($role, Registrar::roles()->find($role->key));
 });
 
 it('throws an exception when trying to attach an invalid string value', function () {
     $this->expectException(InvalidArgumentException::class);
 
-    AppRoles::attach('NorseBlue\Heimdall\InvalidDefinedRole');
+    Registrar::roles()->attach('NorseBlue\Heimdall\InvalidDefinedRole');
 });
 
 it('throws an exception when trying to attach an invalid object value', function () {
-    $this->expectException(TypeError::class);
+    $this->expectException(InvalidArgumentException::class);
 
-    AppRoles::attach(new stdClass());
+    Registrar::roles()->attach(new stdClass());
 });
 
 it('can create a role', function () {
-    AppRoles::clear();
+    Registrar::roles()->clear();
 
-    $role = AppRoles::create('test-role', 'Test role', [], 'This is a test role.');
+    $role = Registrar::roles()->create('test-role', 'Test role', 'This is a test role.', []);
 
-    $this->assertTrue(AppRoles::has($role->key));
-    $this->assertEquals($role, AppRoles::find($role->key));
+    $this->assertTrue(Registrar::roles()->has($role->key));
+    $this->assertEquals($role, Registrar::roles()->find($role->key));
 });
 
 it('returns all available roles', function () {
-    AppRoles::clear();
+    Registrar::roles()->clear();
 
-    AppRoles::create('test-role-1', 'Test role 1', ['permission-1.1', 'permission-1.2']);
-    AppRoles::create('test-role-2', 'Test role 2', ['permission-2.1']);
-    AppRoles::create('test-role-3', 'Test role 3', ['permission-3.1', 'permission-3.2', 'permission-3.3']);
+    Registrar::roles()->create('test-role-1', 'Test role 1', permissions: ['permission-1.1', 'permission-1.2']);
+    Registrar::roles()->create('test-role-2', 'Test role 2', permissions: ['permission-2.1']);
+    Registrar::roles()->create('test-role-3', 'Test role 3', permissions: ['permission-3.1', 'permission-3.2', 'permission-3.3']);
 
-    $this->assertEquals(3, AppRoles::count());
-    $this->assertEquals(['test-role-1', 'test-role-2', 'test-role-3'], AppRoles::all());
+    $this->assertEquals(3, Registrar::roles()->count());
+    $this->assertEquals(['test-role-1', 'test-role-2', 'test-role-3'], Registrar::roles()->all());
     $this->assertEquals([
         'test-role-1' => ['permission-1.1', 'permission-1.2'],
         'test-role-2' => ['permission-2.1'],
         'test-role-3' => ['permission-3.1', 'permission-3.2', 'permission-3.3'],
-    ], AppRoles::all(true));
-    $this->assertEquals(['test-role-1', 'test-role-2', 'test-role-3'], AppRoles::valid(['*']));
+    ], Registrar::roles()->all(true));
+    $this->assertEquals(['test-role-1', 'test-role-2', 'test-role-3'], Registrar::roles()->filterValid(['*']));
     $this->assertEquals([
         'test-role-1' => ['permission-1.1', 'permission-1.2'],
         'test-role-2' => ['permission-2.1'],
         'test-role-3' => ['permission-3.1', 'permission-3.2', 'permission-3.3'],
-    ], AppRoles::valid(['*'], true));
+    ], Registrar::roles()->filterValid(['*'], true));
 });
 
 it('returns valid roles', function () {
-    AppRoles::clear();
+    Registrar::roles()->clear();
 
-    AppRoles::create('test-role-1', 'Test role 1', ['permission-1.1', 'permission-1.2']);
-    AppRoles::create('test-role-2', 'Test role 2', ['permission-2.1']);
-    AppRoles::create('test-role-3', 'Test role 3', ['permission-3.1', 'permission-3.2', 'permission-3.3']);
+    Registrar::roles()->create('test-role-1', 'Test role 1', permissions: ['permission-1.1', 'permission-1.2']);
+    Registrar::roles()->create('test-role-2', 'Test role 2', permissions: ['permission-2.1']);
+    Registrar::roles()->create('test-role-3', 'Test role 3', permissions: ['permission-3.1', 'permission-3.2', 'permission-3.3']);
 
-    $this->assertEquals(3, AppRoles::count());
-    $this->assertEquals(['test-role-1', 'test-role-2'], AppRoles::valid(['test-role-1', 'test-role-2']));
+    $this->assertEquals(3, Registrar::roles()->count());
+    $this->assertEquals(['test-role-1', 'test-role-2'], Registrar::roles()->filterValid(['test-role-1', 'test-role-2']));
     $this->assertEquals([
         'test-role-1' => ['permission-1.1', 'permission-1.2'],
         'test-role-2' => ['permission-2.1'],
-    ], AppRoles::valid(['test-role-1', 'test-role-2'], true));
-    $this->assertEquals(['test-role-1'], AppRoles::valid(['test-role-1', 'test-role-missing']));
-    $this->assertEquals([
+    ], Registrar::roles()->filterValid(['test-role-1', 'test-role-2'], true));
+    $this->assertEquals(['test-role-1'], Registrar::roles()->filterValid(['test-role-1', 'test-role-missing']));
+    $this->assertEquals(
+        [
         'test-role-1' => ['permission-1.1', 'permission-1.2'],
-    ], AppRoles::valid([
-        'test-role-1', 'test-role-missing',
-    ], true));
+        ],
+        Registrar::roles()->filterValid(
+            [
+            'test-role-1',
+            'test-role-missing',
+            ],
+            true
+        )
+    );
 });
