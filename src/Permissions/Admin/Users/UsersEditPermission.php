@@ -17,11 +17,10 @@ class UsersEditPermission extends DefinedPermission
      */
     public static function definition(): array
     {
-        // @phpstan-ignore-next-line
         return [
             'key' => static::key(),
-            'name' => __('Admin Users - Edit') ?? '',
-            'description' => __('Allows the edition of users.') ?? '',
+            'name' => __('Admin Users - Edit'),
+            'description' => __('Allows the edition of users.'),
         ];
     }
 

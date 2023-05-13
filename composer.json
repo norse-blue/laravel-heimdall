@@ -20,18 +20,40 @@
             "role": "Developer"
         }
     ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "NorseBlue\\Heimdall\\Providers\\HeimdallServiceProvider"
+            ]
+        },
+        "aliases": {
+            "Heimdall": "NorseBlue\\LaravelHeimdall\\Facades\\Registrar"
+        }
+    },
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "ext-json": "*"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.8",
-        "nunomaduro/collision": "^6.2",
-        "nunomaduro/larastan": "^2.1",
-        "nunomaduro/phpinsights": "^2.3",
-        "orchestra/testbench": "^7.5",
-        "pestphp/pest": "^1.21",
-        "pestphp/pest-plugin-laravel": "^1.2"
+        "laravel/pint": "^1.6",
+        "nunomaduro/larastan": "^2.5",
+        "orchestra/testbench": "^8.0",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0",
+        "phpstan/phpstan": "^1.10"
     },
     "autoload": {
         "psr-4": {
@@ -44,47 +66,28 @@
         }
     },
     "scripts": {
-        "analyze": "phpstan analyze --ansi",
-        "analyze:github": "phpstan analyze --error-format=github",
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
         "check": [
-            "@style:check",
+            "@pint:check",
             "@test",
-            "@analyze"
+            "@stan"
         ],
         "check:coverage": [
-            "@style:check",
+            "@pint:check",
             "@test:coverage",
-            "@analyze"
+            "@stan"
         ],
-        "insights": "phpinsights --no-interaction",
-        "insights:summary": "phpinsights --no-interaction --summary",
-        "style:check": "phpcs",
-        "style:fix": "phpcbf || phpcs",
-        "test": "pest --colors=always",
+        "pint": "pint",
+        "pint:check": "pint --test -v",
+        "stan": "phpstan analyze --ansi",
+        "stan:github": "phpstan analyze --ansi --error-format=github",
+        "test": "pest",
         "test:coverage": [
             "@putenv XDEBUG_MODE=coverage",
-            "pest --colors=always --coverage-text --coverage-clover=./build/coverage.xml --coverage-html=./build/coverage"
-        ]
+            "pest --coverage --coverage-text --coverage-clover=./build/coverage.xml --coverage-html=./build/coverage"
+        ],
+        "test:output": "pest --disallow-test-output"
     },
-    "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "pestphp/pest-plugin": true
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-main": "1.x-dev"
-        },
-        "laravel": {
-            "providers": [
-                "NorseBlue\\Heimdall\\Providers\\HeimdallServiceProvider"
-            ]
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "funding": [
         {
             "type": "github",

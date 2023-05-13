@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use NorseBlue\Heimdall\Role;
 use NorseBlue\Heimdall\Roles\AdminRole;
-
 use function Pest\Laravel\mock;
 
 it('can create a defined admin role permission', function () {

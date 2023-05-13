@@ -6,10 +6,9 @@ use Illuminate\Support\Facades\Gate;
 use NorseBlue\Heimdall\Facades\Registrar;
 use NorseBlue\Heimdall\Permissions\Admin\Dashboard\DashboardShowPermission;
 use NorseBlue\Heimdall\Roles\AdminRole;
-use NorseBlue\Heimdall\Tests\Fixtures\UserWithRoles;
-
 use function NorseBlue\Heimdall\Tests\clearAppRoles;
 use function NorseBlue\Heimdall\Tests\createTestRoles;
+use NorseBlue\Heimdall\Tests\Fixtures\UserWithRoles;
 use function NorseBlue\Heimdall\Tests\setUpDatabaseForRoles;
 
 it('handles non initialized roles correctly', function () {

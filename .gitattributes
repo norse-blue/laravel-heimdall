@@ -1,7 +1,6 @@
 * text=auto
 
 # Folders
-/.changelog export-ignore
 /.circleci export-ignore
 /.github export-ignore
 /tests export-ignore

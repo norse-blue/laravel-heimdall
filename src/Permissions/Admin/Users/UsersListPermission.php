@@ -17,11 +17,10 @@ class UsersListPermission extends DefinedPermission
      */
     public static function definition(): array
     {
-        // @phpstan-ignore-next-line
         return [
             'key' => static::key(),
-            'name' => __('Admin Users - List') ?? '',
-            'description' => __('Allows the listing of users.') ?? '',
+            'name' => __('Admin Users - List'),
+            'description' => __('Allows the listing of users.'),
         ];
     }
 

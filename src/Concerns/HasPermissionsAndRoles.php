@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NorseBlue\Heimdall\Traits;
+namespace NorseBlue\Heimdall\Concerns;
 
 use JsonException;
 use NorseBlue\Heimdall\Facades\Registrar;
@@ -39,12 +39,9 @@ trait HasPermissionsAndRoles
 
     public function hasPermission(string $key): bool
     {
-        return Registrar::permissions()->has($key) && (
-                $this->all_permissions === ['*'] || in_array(
-                    Registrar::permissions()->computeKey($key),
-                    $this->all_permissions,
-                    true
-                )
+        return Registrar::permissions()->has($key)
+            && ($this->all_permissions === ['*']
+                || in_array(Registrar::permissions()->computeKey($key), $this->all_permissions, true)
             );
     }
 }

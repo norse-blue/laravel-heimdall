@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NorseBlue\Heimdall\Concerns;
+namespace NorseBlue\Heimdall;
 
 use JsonSerializable;
 

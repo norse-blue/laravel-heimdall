@@ -10,11 +10,10 @@ class DashboardShowPermission extends DefinedPermission
 {
     public static function definition(): array
     {
-        // @phpstan-ignore-next-line
         return [
             'key' => static::key(),
-            'name' => __('Admin Dashboard - Show') ?? '',
-            'description' => __('Allows the display of the admin dashboard.') ?? '',
+            'name' => __('Admin Dashboard - Show'),
+            'description' => __('Allows the display of the admin dashboard.'),
         ];
     }
 

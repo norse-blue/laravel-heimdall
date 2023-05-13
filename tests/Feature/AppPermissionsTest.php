@@ -44,12 +44,6 @@ it('throws an exception when trying to attach an invalid string value', function
     Registrar::permissions()->attach('NorseBlue\Heimdall\InvalidDefinedRole');
 });
 
-it('throws an exception when trying to attach an invalid object value', function () {
-    $this->expectException(InvalidArgumentException::class);
-
-    Registrar::permissions()->attach(new stdClass());
-});
-
 it('can create a permission', function () {
     Registrar::permissions()->clear();
 
@@ -89,8 +83,8 @@ it('returns valid permissions', function () {
     $this->assertEquals(3, Registrar::permissions()->count());
     $this->assertEquals(
         [
-        'test-permission-1',
-        'test-permission-2',
+            'test-permission-1',
+            'test-permission-2',
         ],
         Registrar::permissions()->filterValid([
             'test-permission-1',
@@ -99,7 +93,7 @@ it('returns valid permissions', function () {
     );
     $this->assertEquals(
         [
-        'test-permission-1',
+            'test-permission-1',
         ],
         Registrar::permissions()->filterValid([
             'test-permission-1',

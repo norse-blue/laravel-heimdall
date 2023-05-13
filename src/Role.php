@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace NorseBlue\Heimdall;
 
-use NorseBlue\Heimdall\Concerns\Entity;
 use NorseBlue\Heimdall\Exceptions\InvalidRoleKeyException;
 
 class Role extends Entity
@@ -15,17 +14,19 @@ class Role extends Entity
     public readonly array $permissions;
 
     /**
-     * @param array<string>|string $permissions
+     * @param  array<string>|string  $permissions
      */
     public function __construct(
-        public readonly string $key,
-        public readonly string $name,
-        public readonly string $description = '',
+        string $key,
+        string $name,
+        string $description = '',
         array|string $permissions = []
     ) {
         if ($key === '*') {
             throw new InvalidRoleKeyException('Wildcard key is not allowed for roles.');
         }
+
+        parent::__construct($key, $name, $description);
 
         $this->permissions = is_string($permissions) ? [$permissions]
             : collect($permissions)

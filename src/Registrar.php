@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace NorseBlue\Heimdall;
 
-use NorseBlue\Heimdall\Concerns\Entity;
 use NorseBlue\Heimdall\Enums\EntityType;
 use NorseBlue\Heimdall\Registrar\PermissionRegistrar;
 use NorseBlue\Heimdall\Registrar\RoleRegistrar;
 
-class Registrar
+readonly class Registrar
 {
-    protected readonly PermissionRegistrar $permissions;
-    protected readonly RoleRegistrar $roles;
+    protected PermissionRegistrar $permissions;
+
+    protected RoleRegistrar $roles;
 
     public function __construct(?PermissionRegistrar $permissionRegistrar = null, ?RoleRegistrar $roleRegistrar = null)
     {

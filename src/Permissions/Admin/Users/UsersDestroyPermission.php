@@ -17,11 +17,10 @@ class UsersDestroyPermission extends DefinedPermission
      */
     public static function definition(): array
     {
-        // @phpstan-ignore-next-line
         return [
             'key' => static::key(),
-            'name' => __('Admin Users - Destroy') ?? '',
-            'description' => __('Allows the destruction of users.') ?? '',
+            'name' => __('Admin Users - Destroy'),
+            'description' => __('Allows the destruction of users.'),
         ];
     }
 

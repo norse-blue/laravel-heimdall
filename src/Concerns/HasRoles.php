@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace NorseBlue\Heimdall\Traits;
+namespace NorseBlue\Heimdall\Concerns;
 
 use JsonException;
 use NorseBlue\Heimdall\Facades\Registrar;
 
 /**
  * @property array<string> $roles
- *
  * @property-read array<string> $permissions
  */
 trait HasRoles
@@ -78,7 +77,7 @@ trait HasRoles
     }
 
     /**
-     * @param array<string> $roles
+     * @param  array<string>  $roles
      *
      * @throws JsonException
      */

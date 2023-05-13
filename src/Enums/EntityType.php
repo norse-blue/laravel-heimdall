@@ -10,8 +10,8 @@ use NorseBlue\Heimdall\Contracts\DefinesRole;
 
 enum EntityType: string
 {
-case Permission = 'permission';
-case Role = 'role';
+    case Permission = 'permission';
+    case Role = 'role';
 
     /**
      * @return class-string<DefinesEntity>
@@ -23,4 +23,4 @@ case Role = 'role';
             self::Role => DefinesRole::class,
         };
     }
-    }
+}
