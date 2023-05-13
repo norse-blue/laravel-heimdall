@@ -9,7 +9,6 @@ use NorseBlue\Heimdall\Permissions\Admin\Users\UsersDestroyPermission;
 use NorseBlue\Heimdall\Permissions\Admin\Users\UsersEditPermission;
 use NorseBlue\Heimdall\Permissions\Admin\Users\UsersListPermission;
 use NorseBlue\Heimdall\Permissions\Admin\Users\UsersShowPermission;
-
 use function Pest\Laravel\mock;
 
 it('can create a defined admin dashboard show permission', function () {

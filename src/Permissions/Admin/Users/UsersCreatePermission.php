@@ -17,11 +17,10 @@ class UsersCreatePermission extends DefinedPermission
      */
     public static function definition(): array
     {
-        // @phpstan-ignore-next-line
         return [
             'key' => static::key(),
-            'name' => __('Admin Users - Create') ?? '',
-            'description' => __('Allows the creation of users.') ?? '',
+            'name' => __('Admin Users - Create'),
+            'description' => __('Allows the creation of users.'),
         ];
     }
 

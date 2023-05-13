@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NorseBlue\Heimdall\Traits;
+namespace NorseBlue\Heimdall\Concerns;
 
 use JsonException;
 use NorseBlue\Heimdall\Facades\Registrar;
@@ -47,7 +47,7 @@ trait HasPermissions
     }
 
     /**
-     * @param array<string> $permissions
+     * @param  array<string>  $permissions
      *
      * @throws JsonException
      */

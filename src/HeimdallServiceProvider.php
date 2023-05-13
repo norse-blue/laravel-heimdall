@@ -41,7 +41,7 @@ class HeimdallServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/heimdall.php', 'heimdall');
+        $this->mergeConfigFrom(__DIR__.'/../config/heimdall.php', 'heimdall');
         $this->app->singleton(Registrar::class, fn ($app) => new Registrar(
             $app->make(PermissionRegistrar::class),
             $app->make(RoleRegistrar::class),
@@ -67,13 +67,13 @@ class HeimdallServiceProvider extends ServiceProvider
         }
 
         $this->publishes([
-            __DIR__ . '/../config/heimdall.php' => config_path('heimdall.php'),
+            __DIR__.'/../config/heimdall.php' => config_path('heimdall.php'),
         ], 'heimdall-config');
     }
 
     /**
-     * @param string $key The config key that holds the entities.
-     * @param EntityType $type The type of entity we want to load from config.
+     * @param  string  $key The config key that holds the entities.
+     * @param  EntityType  $type The type of entity we want to load from config.
      */
     protected function loadConfigEntities(string $key, EntityType $type): void
     {
@@ -84,7 +84,7 @@ class HeimdallServiceProvider extends ServiceProvider
             ->each(function ($params) use ($key, $type): void {
                 if (is_string($params)) {
                     if (! class_exists($params) || ! is_subclass_of($params, $type->definitionType())) {
-                        Log::warning("Invalid entry found for ${key} config value.", [
+                        Log::warning("Invalid entry found for $key config value.", [
                             'config-class' => $params,
                             'class-exists' => class_exists($params),
                             'expected-type' => $type->definitionType(),
@@ -101,7 +101,7 @@ class HeimdallServiceProvider extends ServiceProvider
                     $this->registerEntity($type, $params);
                 } catch (ArgumentCountError $exception) {
                     Log::warning(
-                        "Invalid entry found in ${key} config.",
+                        "Invalid entry found in $key config.",
                         ['invalid-entry' => $params, 'exception' => $exception]
                     );
                 }

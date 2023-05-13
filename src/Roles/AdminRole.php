@@ -16,7 +16,6 @@ class AdminRole extends DefinedRole
      */
     public static function definition(): array
     {
-        // @phpstan-ignore-next-line
         return [
             'key' => static::key(),
             'name' => __('Administrator'),

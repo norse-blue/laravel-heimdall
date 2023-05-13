@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace NorseBlue\Heimdall\Tests\Fixtures;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use NorseBlue\Heimdall\Traits\HasRoles;
+use NorseBlue\Heimdall\Concerns\HasRoles;
 
 class UserWithRoles extends Authenticatable
 {

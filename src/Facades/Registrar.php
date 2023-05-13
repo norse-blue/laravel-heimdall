@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace NorseBlue\Heimdall\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use NorseBlue\Heimdall\Concerns\Entity;
+use NorseBlue\Heimdall\Entity;
 use NorseBlue\Heimdall\Enums\EntityType;
 use NorseBlue\Heimdall\HeimdallServiceProvider;
 use NorseBlue\Heimdall\Registrar\PermissionRegistrar;

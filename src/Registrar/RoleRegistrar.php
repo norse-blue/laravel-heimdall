@@ -22,7 +22,7 @@ class RoleRegistrar extends BaseRegistrar
     }
 
     /**
-     * @param array<string> $permissions
+     * @param  array<string>  $permissions
      */
     public function create(string $key, string $name, string $description = '', array $permissions = []): Role
     {
@@ -33,8 +33,7 @@ class RoleRegistrar extends BaseRegistrar
     }
 
     /**
-     * @param array<string> $items
-     *
+     * @param  array<string>  $items
      * @return array<string>
      */
     public function filterValid(array $items, bool $with_permissions = false): array

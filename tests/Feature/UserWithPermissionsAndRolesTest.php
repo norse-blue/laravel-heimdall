@@ -7,10 +7,9 @@ use NorseBlue\Heimdall\Facades\Registrar;
 use NorseBlue\Heimdall\Permissions\Admin\Dashboard\DashboardShowPermission;
 use NorseBlue\Heimdall\Permissions\Admin\Users\UsersShowPermission;
 use NorseBlue\Heimdall\Role;
-use NorseBlue\Heimdall\Tests\Fixtures\UserWithPermissionsAndRoles;
-
 use function NorseBlue\Heimdall\Tests\createTestPermissions;
 use function NorseBlue\Heimdall\Tests\createTestRoles;
+use NorseBlue\Heimdall\Tests\Fixtures\UserWithPermissionsAndRoles;
 use function NorseBlue\Heimdall\Tests\setUpDatabaseForPermissionsAndRoles;
 
 it('handles non initialized permissions correctly', function () {

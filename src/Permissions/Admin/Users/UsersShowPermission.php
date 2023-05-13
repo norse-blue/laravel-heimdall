@@ -17,11 +17,10 @@ class UsersShowPermission extends DefinedPermission
      */
     public static function definition(): array
     {
-        // @phpstan-ignore-next-line
         return [
             'key' => static::key(),
-            'name' => __('Admin Users - Show') ?? '',
-            'description' => __('Allows the display of users.') ?? '',
+            'name' => __('Admin Users - Show'),
+            'description' => __('Allows the display of users.'),
         ];
     }
 

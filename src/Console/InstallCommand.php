@@ -18,6 +18,7 @@ class InstallCommand extends Command
      * @var string
      */
     protected $description = 'Install the Heimdall components and resources';
+
     /**
      * The name and signature of the console command.
      *
@@ -46,7 +47,7 @@ class InstallCommand extends Command
     {
         // Service Providers...
         copy(
-            __DIR__ . '/../../stubs/app/Providers/HeimdallServiceProvider.php.stub',
+            __DIR__.'/../../stubs/app/Providers/HeimdallServiceProvider.php.stub',
             app_path('Providers/HeimdallServiceProvider.php')
         );
 
@@ -54,7 +55,7 @@ class InstallCommand extends Command
         if ($contents !== false && ! Str::contains($contents, 'App\\Providers\\HeimdallServiceProvider::class')) {
             $this->replaceInFile(
                 "\n    ],\n\n    /*\n    |--------------------------------------------------------------------------\n    | Class Aliases",
-                "        App\Providers\HeimdallServiceProvider::class," . PHP_EOL . "\n    ],\n\n    /*\n    |--------------------------------------------------------------------------\n    | Class Aliases",
+                "        App\Providers\HeimdallServiceProvider::class,".PHP_EOL."\n    ],\n\n    /*\n    |--------------------------------------------------------------------------\n    | Class Aliases",
                 config_path('app.php')
             );
         }

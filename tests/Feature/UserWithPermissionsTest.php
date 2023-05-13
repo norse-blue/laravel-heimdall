@@ -5,10 +5,9 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Gate;
 use NorseBlue\Heimdall\Facades\Registrar;
 use NorseBlue\Heimdall\Permissions\Admin\Dashboard\DashboardShowPermission;
-use NorseBlue\Heimdall\Tests\Fixtures\UserWithPermissions;
-
 use function NorseBlue\Heimdall\Tests\clearAppPermissions;
 use function NorseBlue\Heimdall\Tests\createTestPermissions;
+use NorseBlue\Heimdall\Tests\Fixtures\UserWithPermissions;
 use function NorseBlue\Heimdall\Tests\setUpDatabaseForPermissions;
 
 it('handles non initialized permissions correctly', function () {

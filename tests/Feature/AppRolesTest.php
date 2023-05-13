@@ -44,12 +44,6 @@ it('throws an exception when trying to attach an invalid string value', function
     Registrar::roles()->attach('NorseBlue\Heimdall\InvalidDefinedRole');
 });
 
-it('throws an exception when trying to attach an invalid object value', function () {
-    $this->expectException(InvalidArgumentException::class);
-
-    Registrar::roles()->attach(new stdClass());
-});
-
 it('can create a role', function () {
     Registrar::roles()->clear();
 
@@ -97,12 +91,12 @@ it('returns valid roles', function () {
     $this->assertEquals(['test-role-1'], Registrar::roles()->filterValid(['test-role-1', 'test-role-missing']));
     $this->assertEquals(
         [
-        'test-role-1' => ['permission-1.1', 'permission-1.2'],
+            'test-role-1' => ['permission-1.1', 'permission-1.2'],
         ],
         Registrar::roles()->filterValid(
             [
-            'test-role-1',
-            'test-role-missing',
+                'test-role-1',
+                'test-role-missing',
             ],
             true
         )

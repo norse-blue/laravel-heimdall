@@ -69,13 +69,11 @@ return [
         /**
          * The default permission's database column name.
          */
-
         'permissions' => 'permissions',
 
         /**
          * The default role's database column name.
          */
-
         'roles' => 'roles',
 
     ],

@@ -6,6 +6,7 @@ namespace NorseBlue\Heimdall\Registrar;
 
 use InvalidArgumentException;
 use NorseBlue\Heimdall\Contracts\DefinesEntity;
+use NorseBlue\Heimdall\Entity;
 use NorseBlue\Heimdall\Permissions\DefinedPermission;
 use NorseBlue\Heimdall\Roles\DefinedRole;
 
@@ -32,33 +33,26 @@ abstract class BaseRegistrar
     }
 
     /**
-     * @param string|T $item
-     *
+     * @param  class-string<T>|DefinesEntity|Entity  $item
      * @return T
      */
-    public function attach(mixed $item): mixed
+    public function attach(string|DefinesEntity|Entity $item): mixed
     {
         if (is_string($item)) {
             if (! is_subclass_of($item, $this->getDefinitionType())) {
                 throw new InvalidArgumentException(
-                    "The class ${item} is not of type " . $this->getDefinitionType() . '.'
+                    "The class $item is not of type ".$this->getDefinitionType().'.'
                 );
             }
 
-            /**
-             * @var DefinesEntity $item
-             *
-             * @phpstan-ignore-next-line
-             */
             return $this->create(...$item::definition());
         }
 
         if (! is_a($item, $this->getType(), true)) {
-            throw new InvalidArgumentException('The given item is not of type ' . $this->getType() . '.');
+            throw new InvalidArgumentException('The given item is not of type '.$this->getType().'.');
         }
 
-        /** @phpstan-ignore-next-line */
-        return $this->items[$item->key] = $item;
+        return $this->items[(string) $item->key] = $item;
     }
 
     public function clear(): void
@@ -77,8 +71,7 @@ abstract class BaseRegistrar
     }
 
     /**
-     * @param array<string> $keys
-     *
+     * @param  array<string>  $keys
      * @return array<string>
      */
     public function computeKeys(array $keys): array
@@ -97,8 +90,7 @@ abstract class BaseRegistrar
     }
 
     /**
-     * @param array<string> $items
-     *
+     * @param  array<string>  $items
      * @return array<string>
      */
     abstract public function filterValid(array $items): array;
